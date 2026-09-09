@@ -509,9 +509,10 @@
       let parsed;
       try { parsed = normalize(JSON.parse(r.result)); }
       catch { return toast('That file is not valid JSON', true); }
+      const nb = parsed.bookmarks.length, nc = parsed.categories.length;
       confirmThen('Replace all bookmarks?',
-        `The backup holds ${parsed.bookmarks.length} bookmarks in ${parsed.categories.length} categories. ` +
-        'This replaces what is in the gist now.',
+        `The backup holds ${nb} bookmark${nb === 1 ? '' : 's'} in ` +
+        `${nc} categor${nc === 1 ? 'y' : 'ies'}. This replaces what is in the gist now.`,
         'Replace', () => {
           data = parsed;
           dropHay();
