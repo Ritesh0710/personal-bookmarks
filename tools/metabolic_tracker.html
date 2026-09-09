@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ritesh — Metabolic Healing Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f0d;
+    --surface: #111812;
+    --surface2: #182019;
+    --border: #1e2b1f;
+    --accent: #4ade80;
+    --accent2: #86efac;
+    --accent-dim: rgba(74,222,128,0.12);
+    --warn: #fb923c;
+    --warn-dim: rgba(251,146,60,0.12);
+    --danger: #f87171;
+    --danger-dim: rgba(248,113,113,0.12);
+    --gold: #fbbf24;
+    --gold-dim: rgba(251,191,36,0.10);
+    --text: #e8f5e9;
+    --text2: #7a9e7e;
+    --text3: #3d5c40;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(74,222,128,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,222,128,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    padding: 40px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+  .header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+  .logo-block h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .logo-block p {
+    font-size: 0.7rem;
+    color: var(--text2);
+    margin-top: 6px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .date-badge {
+    background: var(--accent-dim);
+    border: 1px solid rgba(74,222,128,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.72rem;
+    color: var(--accent2);
+    letter-spacing: 1px;
+  }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    background: var(--danger-dim);
+    border: 1px solid rgba(248,113,113,0.3);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    margin-bottom: 32px;
+    font-size: 0.78rem;
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: pulse-border 2s ease infinite;
+  }
+  @keyframes pulse-border {
+    0%,100% { border-color: rgba(248,113,113,0.3); }
+    50% { border-color: rgba(248,113,113,0.7); }
+  }
+
+  /* BLOOD STATS */
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 14px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: var(--text3); }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .stat-card.danger::before { background: var(--danger); }
+  .stat-card.warn::before { background: var(--warn); }
+  .stat-card.ok::before { background: var(--accent); }
+
+  .stat-label { font-size: 0.62rem; color: var(--text2); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-card.danger .stat-value { color: var(--danger); }
+  .stat-card.warn .stat-value { color: var(--warn); }
+  .stat-card.ok .stat-value { color: var(--accent); }
+  .stat-unit { font-size: 0.6rem; color: var(--text3); }
+  .stat-ref { font-size: 0.58rem; color: var(--text3); margin-top: 6px; border-top: 1px solid var(--border); padding-top: 6px; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 4px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: calc(var(--radius) - 4px);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #0a0f0d;
+    font-weight: 600;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* PROTOCOL CARDS */
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .protocol-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .protocol-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .protocol-card .time-tag {
+    font-size: 0.58rem;
+    background: var(--accent-dim);
+    color: var(--accent2);
+    border-radius: 100px;
+    padding: 2px 8px;
+    letter-spacing: 1px;
+  }
+  .protocol-card p {
+    font-size: 0.7rem;
+    color: var(--text2);
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .remedy-list { list-style: none; }
+  .remedy-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.72rem;
+  }
+  .remedy-item:last-child { border-bottom: none; }
+  .remedy-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .remedy-name { color: var(--text); font-weight: 500; }
+  .remedy-dose { color: var(--accent); font-size: 0.68rem; }
+  .remedy-how { color: var(--text2); font-size: 0.64rem; margin-top: 2px; line-height: 1.5; }
+
+  /* What you MISSED section */
+  .missed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .missed-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    border-left: 3px solid var(--gold);
+  }
+  .missed-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.82rem;
+    color: var(--gold);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .missed-card p, .missed-card li {
+    font-size: 0.68rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .missed-card ul { padding-left: 14px; }
+
+  /* DAILY LOG */
+  .log-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .log-form h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.62rem;
+    color: var(--text2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--accent);
+  }
+  .form-group textarea { resize: vertical; min-height: 70px; }
+  .form-group select option { background: var(--surface); }
+
+  /* Checkboxes for remedies */
+  .remedy-checks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.7rem;
+    color: var(--text2);
+  }
+  .check-item:hover { border-color: var(--accent); color: var(--text); }
+  .check-item input[type="checkbox"] { display: none; }
+  .check-item .check-box {
+    width: 16px; height: 16px;
+    border: 1.5px solid var(--text3);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    font-size: 10px;
+  }
+  .check-item.checked { border-color: var(--accent); color: var(--accent2); background: var(--accent-dim); }
+  .check-item.checked .check-box { background: var(--accent); border-color: var(--accent); color: #0a0f0d; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0f0d;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 12px 28px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: 10px;
+  }
+  .btn-secondary:hover { border-color: var(--text2); color: var(--text); }
+
+  /* LOG TABLE */
+  .log-table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .log-table-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .log-table-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.68rem; }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 0.58rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+
+  .score-pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-size: 0.62rem;
+    font-weight: 600;
+  }
+  .score-high { background: var(--accent-dim); color: var(--accent); }
+  .score-mid { background: var(--warn-dim); color: var(--warn); }
+  .score-low { background: var(--danger-dim); color: var(--danger); }
+
+  /* BLOOD ENTRY */
+  .blood-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .blood-form h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+
+  /* PROGRESS CHART */
+  .chart-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .chart-area h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  canvas { width: 100% !important; }
+
+  /* GOALS */
+  .goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .goal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .goal-card .goal-name { font-size: 0.65rem; color: var(--text2); margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
+  .goal-card .goal-current {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--danger);
+    line-height: 1;
+  }
+  .goal-card .goal-target { font-size: 0.62rem; color: var(--text3); margin-top: 4px; }
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 100px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--danger), var(--warn));
+    transition: width 0.5s ease;
+  }
+  .progress-fill.good { background: linear-gradient(90deg, var(--warn), var(--accent)); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--accent);
+    color: #0a0f0d;
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    z-index: 9999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* WHAT'S MISSING section */
+  .missing-section { margin-bottom: 24px; }
+
+  .supplement-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.68rem;
+  }
+  .supplement-table th {
+    background: var(--surface2);
+    color: var(--text3);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .supplement-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-of: top;
+  }
+  .supplement-table tr:last-child td { border-bottom: none; }
+  .supplement-table .name { color: var(--text); font-weight: 500; }
+  .supplement-table .priority { padding: 2px 8px; border-radius: 100px; font-size: 0.6rem; }
+  .priority-high { background: var(--danger-dim); color: var(--danger); }
+  .priority-med { background: var(--warn-dim); color: var(--warn); }
+  .priority-low { background: var(--accent-dim); color: var(--accent); }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text3);
+    font-size: 0.75rem;
+  }
+  .empty-state span { display: block; font-size: 2rem; margin-bottom: 10px; }
+
+  /* CSV export notice */
+  .csv-notice {
+    background: var(--gold-dim);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-size: 0.68rem;
+    color: #a07830;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .protocol-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="header-inner">
+      <div class="logo-block">
+        <h1>⚕ HEAL TRACKER</h1>
+        <p>Ritesh Zambre · Metabolic Recovery Protocol</p>
+      </div>
+      <div class="date-badge" id="currentDate"></div>
+    </div>
+  </header>
+
+  <div class="alert-banner">
+    ⚠️ TG = 575 mg/dL is a medical emergency level. See a physician/endocrinologist this week. This tracker supports — not replaces — medical care.
+  </div>
+
+  <!-- BLOOD STATS -->
+  <div class="section-label">📋 Baseline Blood Report — 08 March 2026</div>
+  <div class="stats-grid">
+    <div class="stat-card danger">
+      <div class="stat-label">Triglycerides</div>
+      <div class="stat-value">575</div>
+      <div class="stat-unit">mg/dL</div>
+      <div class="stat-ref">Normal &lt;150 · VERY HIGH</div>
+    </div>
+    <div class="stat-card danger">
+      <div class="stat-label">HDL (Good)</div>
+      <div class="stat-value">27</div>
+      <div class="stat-unit">mg/dL</div>
+      <div class="stat-ref">Target &gt;40 · CRITICALLY LOW</div>
+    </div>
+    <div class="stat-card danger">
+      <div class="stat-label">VLDL</div>
+      <div class="stat-value">115</div>
+      <div class="stat-unit">mg/dL</div>
+      <div class="stat-ref">Normal 5–51 · HIGH</div>
+    </div>
+    <div class="stat-card warn">
+      <div class="stat-label">Chol/HDL Ratio</div>
+      <div class="stat-value">6.78</div>
+      <div class="stat-unit">ratio</div>
+      <div class="stat-ref">Target ≤5.00 · HIGH RISK</div>
+    </div>
+    <div class="stat-card warn">
+      <div class="stat-label">HbA1c</div>
+      <div class="stat-value">5.7</div>
+      <div class="stat-unit">%</div>
+      <div class="stat-ref">Pre-diabetic zone</div>
+    </div>
+    <div class="stat-card warn">
+      <div class="stat-label">Uric Acid</div>
+      <div class="stat-value">8.4</div>
+      <div class="stat-unit">mg/dL</div>
+      <div class="stat-ref">Max 8.5 · Upper limit</div>
+    </div>
+    <div class="stat-card ok">
+      <div class="stat-label">Total Cholesterol</div>
+      <div class="stat-value">183</div>
+      <div class="stat-unit">mg/dL</div>
+      <div class="stat-ref">Target &lt;200 · OK</div>
+    </div>
+    <div class="stat-card ok">
+      <div class="stat-label">LDL</div>
+      <div class="stat-value">41</div>
+      <div class="stat-unit">mg/dL</div>
+      <div class="stat-ref">Optimal &lt;100 · GOOD</div>
+    </div>
+    <div class="stat-card ok">
+      <div class="stat-label">Fasting Sugar</div>
+      <div class="stat-value">90</div>
+      <div class="stat-unit">mg/dL</div>
+      <div class="stat-ref">Normal 60–110 · OK</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('protocol')">Protocol</button>
+    <button class="tab-btn" onclick="switchTab('missing')">What Was Missing</button>
+    <button class="tab-btn" onclick="switchTab('daily')">Daily Log</button>
+    <button class="tab-btn" onclick="switchTab('blood')">Blood Results</button>
+    <button class="tab-btn" onclick="switchTab('progress')">Progress</button>
+  </div>
+
+  <!-- ===== TAB: PROTOCOL ===== -->
+  <div class="tab-content active" id="tab-protocol">
+
+    <div class="section-label">🌅 Remedy Dosage Protocol — Your Items</div>
+    <div class="protocol-grid">
+
+      <div class="protocol-card">
+        <h3>🌄 Morning Fasted <span class="time-tag">5:30–6:30 AM</span></h3>
+        <p>Take these before any food. Gap of 20–30 min before eating.</p>
+        <ul class="remedy-list">
+          <li class="remedy-item">
+            <span class="remedy-icon">🍶</span>
+            <div>
+              <div class="remedy-name">ACV (Apple Cider Vinegar)</div>
+              <div class="remedy-dose">1 tbsp in 200ml warm water</div>
+              <div class="remedy-how">Sip slowly over 10 min. Never straight. Use straw to protect teeth. Bragg's or raw unfiltered.</div>
+            </div>
+          </li>
+          <li class="remedy-item">
+            <span class="remedy-icon">🍈</span>
+            <div>
+              <div class="remedy-name">Amla Juice</div>
+              <div class="remedy-dose">30ml undiluted OR 20ml + 100ml water</div>
+              <div class="remedy-how">Right after ACV. Potent Vit-C. Helps liver clear fats. Do NOT mix with ACV in same glass.</div>
+            </div>
+          </li>
+          <li class="remedy-item">
+            <span class="remedy-icon">🌿</span>
+            <div>
+              <div class="remedy-name">Kalonji (Nigella Seeds)</div>
+              <div class="remedy-dose">½ tsp (approx 2–2.5g)</div>
+              <div class="remedy-how">Chew whole with water OR crush + mix in warm water. TG-reducing, anti-inflammatory. Don't exceed 1 tsp/day.</div>
+            </div>
+          </li>
+          <li class="remedy-item">
+            <span class="remedy-icon">🌱</span>
+            <div>
+              <div class="remedy-name">Fenugreek (Methi) Seeds</div>
+              <div class="remedy-dose">1 tsp soaked overnight in 100ml water</div>
+              <div class="remedy-how">Eat soaked seeds + drink soaking water. Reduces insulin resistance, lowers TG. Do consistently.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="protocol-card">
+        <h3>🍳 With Breakfast <span class="time-tag">7:00–8:00 AM</span></h3>
+        <p>Have these alongside or immediately after your first meal.</p>
+        <ul class="remedy-list">
+          <li class="remedy-item">
+            <span class="remedy-icon">🟤</span>
+            <div>
+              <div class="remedy-name">Flaxseeds (Alsi)</div>
+              <div class="remedy-dose">1 tbsp freshly ground</div>
+              <div class="remedy-how">MUST grind fresh each day — whole seeds pass undigested. Grind in mixer, add to curd/dough/smoothie. Omega-3 powerhouse for TG.</div>
+            </div>
+          </li>
+          <li class="remedy-item">
+            <span class="remedy-icon">⚫</span>
+            <div>
+              <div class="remedy-name">Til (Sesame Seeds)</div>
+              <div class="remedy-dose">1 tbsp (white or black)</div>
+              <div class="remedy-how">Dry roast 2 min, add to curd, salad, or chutney. Black til = higher mineral content. Raises HDL.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="protocol-card">
+        <h3>🥗 With Lunch <span class="time-tag">1:00–2:00 PM</span></h3>
+        <p>Add these as condiment/finishing — never heat olive oil.</p>
+        <ul class="remedy-list">
+          <li class="remedy-item">
+            <span class="remedy-icon">🫒</span>
+            <div>
+              <div class="remedy-name">Extra Virgin Olive Oil</div>
+              <div class="remedy-dose">1 tbsp drizzled over cooked food</div>
+              <div class="remedy-how">Never cook with it — smoking point too low, destroys benefits. Drizzle over dal/salad/sabzi after plating. Raises HDL, reduces VLDL.</div>
+            </div>
+          </li>
+          <li class="remedy-item">
+            <span class="remedy-icon">🧄</span>
+            <div>
+              <div class="remedy-name">Raw Garlic</div>
+              <div class="remedy-dose">2–3 cloves crushed raw</div>
+              <div class="remedy-how">Crush 10 min before eating (activates allicin). Eat with lunch. One of the strongest natural TG reducers. You didn't mention this — add it.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="protocol-card">
+        <h3>🌙 With Dinner <span class="time-tag">7:00–8:00 PM</span></h3>
+        <p>Finish eating by 8 PM. No food after. Critical for TG.</p>
+        <ul class="remedy-list">
+          <li class="remedy-item">
+            <span class="remedy-icon">🫒</span>
+            <div>
+              <div class="remedy-name">Extra Virgin Olive Oil</div>
+              <div class="remedy-dose">1 tbsp drizzled</div>
+              <div class="remedy-how">Same as lunch. 2 tbsp total per day max.</div>
+            </div>
+          </li>
+          <li class="remedy-item">
+            <span class="remedy-icon">🌿</span>
+            <div>
+              <div class="remedy-name">Cinnamon (Dalchini)</div>
+              <div class="remedy-dose">½ tsp in warm water or food</div>
+              <div class="remedy-how">Reduces post-meal blood sugar spike, improving HbA1c. Add to dal, sabzi, or warm water. Ceylon cinnamon preferred.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="protocol-card">
+        <h3>🥤 Between Meals <span class="time-tag">Anytime</span></h3>
+        <p>These can be taken at any point during the day.</p>
+        <ul class="remedy-list">
+          <li class="remedy-item">
+            <span class="remedy-icon">💧</span>
+            <div>
+              <div class="remedy-name">Water</div>
+              <div class="remedy-dose">3–4 litres daily</div>
+              <div class="remedy-how">Dehydration concentrates blood lipids artificially. Spread over day. Plain water — no juices, no cold drinks.</div>
+            </div>
+          </li>
+          <li class="remedy-item">
+            <span class="remedy-icon">🌿</span>
+            <div>
+              <div class="remedy-name">Green Tea / Tulsi Tea</div>
+              <div class="remedy-dose">2 cups/day</div>
+              <div class="remedy-how">No sugar. Catechins in green tea lower TG by 10–15%. Tulsi also reduces cortisol which worsens lipid profile.</div>
+            </div>
+          </li>
+          <li class="remedy-item">
+            <span class="remedy-icon">🥒</span>
+            <div>
+              <div class="remedy-name">Karela (Bitter Gourd) Juice</div>
+              <div class="remedy-dose">50–100ml 3x/week</div>
+              <div class="remedy-how">Powerful for insulin resistance and TG. Bitter but effective. Mix with amla or cucumber if too strong.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="protocol-card">
+        <h3>🏃 Movement <span class="time-tag">Daily Non-Negotiable</span></h3>
+        <p>Exercise is the ONLY thing that reliably raises HDL. You CANNOT replace this with remedies.</p>
+        <ul class="remedy-list">
+          <li class="remedy-item">
+            <span class="remedy-icon">🚶</span>
+            <div>
+              <div class="remedy-name">Brisk Walk — Week 1–4</div>
+              <div class="remedy-dose">30–45 min daily</div>
+              <div class="remedy-how">Morning preferred. Brisk pace (can talk, can't sing). Even 30 min/day drops TG by 50–80 in 6 weeks.</div>
+            </div>
+          </li>
+          <li class="remedy-item">
+            <span class="remedy-icon">💪</span>
+            <div>
+              <div class="remedy-name">Bodyweight — Week 3+</div>
+              <div class="remedy-dose">15 min: squats, push-ups, planks</div>
+              <div class="remedy-how">Muscle burns glucose → less converts to TG. Add after walking habit is established.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Foods to eat / avoid -->
+    <div class="section-label">🍽️ Diet Rules</div>
+    <div class="protocol-grid">
+      <div class="protocol-card">
+        <h3 style="color:var(--danger)">❌ STOP Eating These</h3>
+        <p>These are the primary drivers of TG = 575. Cut them first.</p>
+        <ul class="remedy-list">
+          <li class="remedy-item"><span class="remedy-icon">🍚</span><div><div class="remedy-name">White rice in large amounts</div><div class="remedy-how">Switch to small portions brown rice or replace with jowar/bajra roti</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🍞</span><div><div class="remedy-name">Maida — bread, biscuits, maggi, naan</div><div class="remedy-how">Refined flour spikes insulin → converts to TG fastest</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🧃</span><div><div class="remedy-name">Sugar + Fruit Juice (even "natural")</div><div class="remedy-how">Fructose goes directly to liver → TG production. Whole fruits only, max 1–2/day</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🍺</span><div><div class="remedy-name">Alcohol (any form)</div><div class="remedy-how">Even 1 beer can double TG. Complete elimination essential at 575</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🛢️</span><div><div class="remedy-name">Fried foods, chips, namkeen, farsan</div><div class="remedy-how">Trans fats + refined carbs = worst combination</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🍯</span><div><div class="remedy-name">Excess honey, jaggery, dates</div><div class="remedy-how">"Healthy" but still fructose/sucrose — limit strictly</div></div></li>
+        </ul>
+      </div>
+      <div class="protocol-card">
+        <h3 style="color:var(--accent)">✅ EAT More Of These</h3>
+        <p>Actively anti-inflammatory and TG-lowering foods.</p>
+        <ul class="remedy-list">
+          <li class="remedy-item"><span class="remedy-icon">🫘</span><div><div class="remedy-name">Dal — moong, masoor, chana, kulthi</div><div class="remedy-how">5–6 types/week. Soluble fibre binds fats in gut</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🥬</span><div><div class="remedy-name">Palak, methi, bhindi, karela</div><div class="remedy-how">Low glycaemic, high fibre, mineral-rich. Karela is best</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🥚</span><div><div class="remedy-name">Whole eggs — 1 daily</div><div class="remedy-how">Your LDL is only 41 — eggs are safe and raise HDL</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🐟</span><div><div class="remedy-name">Fatty fish — rohu, bangda, surmai</div><div class="remedy-how">2x/week if non-veg. Omega-3 cuts TG by 20–30%</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🫙</span><div><div class="remedy-name">Curd/Chaas (not sweetened)</div><div class="remedy-how">Probiotics improve gut → liver lipid processing</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🌾</span><div><div class="remedy-name">Jowar, bajra roti instead of wheat</div><div class="remedy-how">Lower glycaemic index, more fibre, better for TG</div></div></li>
+          <li class="remedy-item"><span class="remedy-icon">🥜</span><div><div class="remedy-name">Walnuts — 4–5 daily</div><div class="remedy-how">Best plant omega-3 source. Raises HDL directly</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB: MISSING ===== -->
+  <div class="tab-content" id="tab-missing">
+
+    <div class="section-label">🔍 What Was Missing From Previous Analysis</div>
+    <p style="font-size:0.72rem; color:var(--text2); margin-bottom:20px; line-height:1.8;">These are evidence-based additions specific to your panel — TG 575 + HDL 27 + HbA1c 5.7 + Uric Acid 8.4 — that weren't covered before.</p>
+
+    <div class="missed-grid">
+
+      <div class="missed-card">
+        <h4>🩺 Doctor Visit — Urgent</h4>
+        <p>At TG=575, pancreatitis risk is real. A physician will likely prescribe <strong>Fenofibrate 145mg</strong> or <strong>Omega-3 prescription (Vascepa/Lovaza)</strong>. Lifestyle alone takes 8–12 weeks; medication gives immediate protection while you build habits. Don't delay this.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>🧪 Additional Tests Needed</h4>
+        <ul>
+          <li>Thyroid (TSH, T3, T4) — hypothyroidism causes high TG in young men</li>
+          <li>LFT (Liver Function) — lipemic serum = possible fatty liver</li>
+          <li>Insulin Fasting — to confirm insulin resistance degree</li>
+          <li>Vitamin D3 — deficiency worsens metabolic syndrome</li>
+          <li>Vitamin B12 — especially if vegetarian</li>
+          <li>Complete CBC — rule out anemia affecting HbA1c reading</li>
+        </ul>
+      </div>
+
+      <div class="missed-card">
+        <h4>😴 Sleep Quality — Critical</h4>
+        <p>Poor sleep &lt;6 hrs raises cortisol → raises TG and worsens insulin resistance. Aim for 7–8 hrs. Sleep before 11 PM. No screens 30 min before bed. This single change can move HbA1c by 0.3–0.5% in 3 months.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>😤 Stress — Direct TG Driver</h4>
+        <p>Cortisol directly triggers liver to release VLDL (fat). As an AI/ML engineer with active career stress, this matters. 10 min pranayama (anulom-vilom) daily reduces cortisol measurably. Even 5 min of diaphragm breathing before meals helps.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>🫀 Uric Acid 8.4 — Connection</h4>
+        <p>High TG + high uric acid together = <strong>metabolic syndrome</strong>. Uric acid blocks nitric oxide → raises blood pressure. Avoid: organ meats, beer, high-fructose foods, spinach in excess. Drink 3L+ water. Add 1 lemon in water daily — citrate reduces uric acid crystallisation.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>🍋 Lemon Water — Missing</h4>
+        <p>1 whole lemon in 300ml warm water each morning (separate from ACV by 30 min). Citric acid helps uric acid excretion, Vit-C supports HDL production, alkalises gut. This is the cheapest, most effective add for your specific panel.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>🧄 Raw Garlic — Critical Miss</h4>
+        <p>2–3 cloves crushed raw garlic daily. Crush 10 min before eating (activates allicin). Studies show allicin lowers TG by 17% and raises HDL by ~10% in 8 weeks. This is one of the strongest natural TG remedies and was not in your list.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>🌿 Triphala — Ayurvedic Add</h4>
+        <p>½ tsp Triphala powder in warm water at bedtime. Contains amla (haritaki, bibhitaki). Improves gut transit → reduces fat reabsorption. Specifically studied for cholesterol and TG lowering in Indian populations. Safe long-term.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>🫙 Gut Health — Root Cause</h4>
+        <p>Poor gut microbiome increases fat absorption and worsens insulin signalling. Add: daily curd (home-set, not packaged), chaas, occasional idli-dosa (fermented). Avoid antibiotics unless necessary. This wasn't mentioned at all in previous advice.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>🌊 Intermittent Fasting</h4>
+        <p>16:8 fasting (eat 8AM–8PM, fast 16 hrs) is the single most powerful lifestyle intervention for TG reduction — studies show 20–40% drop in 8 weeks. Sedentary lifestyle + IF together: the liver clears accumulated VLDL during the fasting window. Start with 12:12 and extend.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>🥥 Oil Change — Critical</h4>
+        <p>What oil is used for cooking at home? Switch to: <strong>Cold-pressed coconut oil or mustard oil</strong> for cooking (not refined sunflower/palmolein). Refined seed oils are pro-inflammatory and worsen TG. Ghee in small amounts (1 tsp/day) is actually fine — it doesn't raise TG.</p>
+      </div>
+
+      <div class="missed-card">
+        <h4>💊 Omega-3 Supplement</h4>
+        <p>Prescription-grade omega-3 (EPA/DHA) at 2–4g/day is the most evidence-backed natural TG reducer — FDA approved for TG reduction. If not eating fish, get a good quality fish oil or algal omega-3 (veg). This can drop TG by 30–45% alone. Ask doctor about this specifically.</p>
+      </div>
+
+    </div>
+
+    <div class="section-label">💊 Supplements To Consider (After Doctor Consult)</div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:24px;">
+      <table class="supplement-table">
+        <thead>
+          <tr>
+            <th>Supplement</th>
+            <th>Dose</th>
+            <th>Why</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">Omega-3 Fish Oil / Algal Oil</td>
+            <td>2g EPA+DHA daily</td>
+            <td>Drops TG 30–45%. Most studied natural intervention</td>
+            <td><span class="priority priority-high">URGENT</span></td>
+          </tr>
+          <tr>
+            <td class="name">Vitamin D3 + K2</td>
+            <td>2000–5000 IU D3 + 100mcg K2</td>
+            <td>Deficiency extremely common in Pune indoors; worsens metabolic syndrome</td>
+            <td><span class="priority priority-high">HIGH</span></td>
+          </tr>
+          <tr>
+            <td class="name">Magnesium Glycinate</td>
+            <td>300–400mg at bedtime</td>
+            <td>Improves insulin sensitivity, reduces cortisol, improves sleep — all 3 help TG</td>
+            <td><span class="priority priority-high">HIGH</span></td>
+          </tr>
+          <tr>
+            <td class="name">Niacin (Vitamin B3)</td>
+            <td>Only under doctor prescription</td>
+            <td>Raises HDL most effectively of any supplement. Needs supervision</td>
+            <td><span class="priority priority-med">DOCTOR</span></td>
+          </tr>
+          <tr>
+            <td class="name">Berberine</td>
+            <td>500mg 2x/day with meals</td>
+            <td>Reduces insulin resistance, TG, blood sugar. "Natural metformin". Very effective</td>
+            <td><span class="priority priority-med">MEDIUM</span></td>
+          </tr>
+          <tr>
+            <td class="name">Vitamin B12</td>
+            <td>500–1000mcg daily</td>
+            <td>Common deficiency in vegetarians; affects energy and nerve function</td>
+            <td><span class="priority priority-low">ADD</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-label">📅 Retest Schedule</div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:24px;">
+      <table class="supplement-table">
+        <thead><tr><th>When</th><th>Test</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>ASAP (this week)</td><td>Doctor visit — physician/endocrinologist</td><td>TG 575 needs medical assessment</td></tr>
+          <tr><td>Week 2</td><td>TSH, LFT, Fasting Insulin, Vit D, B12</td><td>Rule out secondary causes</td></tr>
+          <tr><td>Week 6–8</td><td>Full Lipid Profile</td><td>Measure TG response to protocol</td></tr>
+          <tr><td>Month 3</td><td>HbA1c, Uric Acid, Lipid Profile</td><td>Comprehensive metabolic check</td></tr>
+          <tr><td>Month 6</td><td>All of above</td><td>Confirm sustained reversal</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB: DAILY LOG ===== -->
+  <div class="tab-content" id="tab-daily">
+
+    <div class="csv-notice">
+      💾 All data is stored in your browser (localStorage) and can be exported as CSV anytime. No server needed.
+    </div>
+
+    <div class="log-form">
+      <h3>📝 Log Today's Protocol</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="log-date">
+        </div>
+        <div class="form-group">
+          <label>Walk (minutes)</label>
+          <input type="number" id="log-walk" placeholder="0" min="0" max="180">
+        </div>
+        <div class="form-group">
+          <label>Water (litres)</label>
+          <input type="number" id="log-water" step="0.5" placeholder="0" min="0" max="6">
+        </div>
+        <div class="form-group">
+          <label>Sleep (hours)</label>
+          <input type="number" id="log-sleep" step="0.5" placeholder="0" min="0" max="12">
+        </div>
+        <div class="form-group">
+          <label>Fasting Window (hrs)</label>
+          <input type="number" id="log-fast" placeholder="12" min="0" max="24">
+        </div>
+        <div class="form-group">
+          <label>Stress Level</label>
+          <select id="log-stress">
+            <option value="">Select</option>
+            <option value="1">1 — Very Low</option>
+            <option value="2">2 — Low</option>
+            <option value="3">3 — Moderate</option>
+            <option value="4">4 — High</option>
+            <option value="5">5 — Very High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-bottom:10px;">✅ Remedies Taken Today</div>
+      <div class="remedy-checks" id="remedyChecks">
+        <!-- dynamically filled -->
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px;">
+        <label>Notes / How do you feel?</label>
+        <textarea id="log-notes" placeholder="Energy levels, digestion, any symptoms..."></textarea>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0;">
+        <label>Diet Quality</label>
+        <select id="log-diet">
+          <option value="">Select</option>
+          <option value="strict">Strict — followed all rules</option>
+          <option value="good">Good — mostly followed</option>
+          <option value="moderate">Moderate — some slips</option>
+          <option value="poor">Poor — many slips</option>
+          <option value="bad">Bad — ignored protocol</option>
+        </select>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="btn-primary" onclick="saveLog()">SAVE DAY</button>
+        <button class="btn-secondary" onclick="exportCSV('daily')">Export CSV</button>
+      </div>
+    </div>
+
+    <div class="log-table-wrap">
+      <div class="log-table-header">
+        <h3>📊 Daily Log History</h3>
+        <span style="font-size:0.65rem; color:var(--text3);" id="logCount">0 entries</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table id="dailyTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Walk</th>
+              <th>Water</th>
+              <th>Sleep</th>
+              <th>Fast</th>
+              <th>Stress</th>
+              <th>Diet</th>
+              <th>Remedies</th>
+              <th>Score</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="dailyTbody">
+            <tr><td colspan="10"><div class="empty-state"><span>📋</span>No logs yet. Add your first entry above.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB: BLOOD RESULTS ===== -->
+  <div class="tab-content" id="tab-blood">
+
+    <div class="blood-form">
+      <h3>🩸 Add Blood Test Result</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Test Date</label>
+          <input type="date" id="b-date">
+        </div>
+        <div class="form-group">
+          <label>Triglycerides (mg/dL)</label>
+          <input type="number" id="b-tg" placeholder="575">
+        </div>
+        <div class="form-group">
+          <label>HDL (mg/dL)</label>
+          <input type="number" id="b-hdl" placeholder="27">
+        </div>
+        <div class="form-group">
+          <label>LDL (mg/dL)</label>
+          <input type="number" id="b-ldl" placeholder="41">
+        </div>
+        <div class="form-group">
+          <label>Total Cholesterol (mg/dL)</label>
+          <input type="number" id="b-chol" placeholder="183">
+        </div>
+        <div class="form-group">
+          <label>VLDL (mg/dL)</label>
+          <input type="number" id="b-vldl" placeholder="115">
+        </div>
+        <div class="form-group">
+          <label>HbA1c (%)</label>
+          <input type="number" id="b-hba1c" step="0.1" placeholder="5.7">
+        </div>
+        <div class="form-group">
+          <label>Fasting Sugar (mg/dL)</label>
+          <input type="number" id="b-sugar" placeholder="90">
+        </div>
+        <div class="form-group">
+          <label>Uric Acid (mg/dL)</label>
+          <input type="number" id="b-uric" step="0.1" placeholder="8.4">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="saveBlood()">SAVE RESULT</button>
+      <button class="btn-secondary" onclick="exportCSV('blood')">Export CSV</button>
+    </div>
+
+    <!-- Goals progress -->
+    <div class="section-label">🎯 Healing Targets</div>
+    <div class="goals-grid" id="goalsGrid">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="log-table-wrap">
+      <div class="log-table-header">
+        <h3>📈 Blood Result History</h3>
+      </div>
+      <div style="overflow-x:auto;">
+        <table id="bloodTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>TG</th>
+              <th>HDL</th>
+              <th>LDL</th>
+              <th>Chol</th>
+              <th>VLDL</th>
+              <th>HbA1c</th>
+              <th>Sugar(F)</th>
+              <th>Uric Acid</th>
+            </tr>
+          </thead>
+          <tbody id="bloodTbody">
+            <tr><td colspan="9"><div class="empty-state"><span>🩸</span>No results yet. Add your baseline above to track progress.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB: PROGRESS ===== -->
+  <div class="tab-content" id="tab-progress">
+
+    <div class="chart-area">
+      <h3>📉 Triglycerides Over Time</h3>
+      <canvas id="tgChart" height="200"></canvas>
+    </div>
+
+    <div class="chart-area">
+      <h3>📈 HDL (Good Cholesterol) Over Time</h3>
+      <canvas id="hdlChart" height="200"></canvas>
+    </div>
+
+    <div class="chart-area">
+      <h3>🏃 Daily Walk Streak</h3>
+      <canvas id="walkChart" height="150"></canvas>
+    </div>
+
+    <div class="chart-area">
+      <h3>😴 Sleep vs Stress</h3>
+      <canvas id="sleepChart" height="150"></canvas>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA LAYER (localStorage as CSV-like store) =====
+
+const REMEDIES = [
+  'ACV', 'Amla Juice', 'Kalonji', 'Methi Seeds', 'Flaxseed (ground)',
+  'Til', 'Olive Oil', 'Raw Garlic', 'Cinnamon', 'Triphala', 'Green Tea',
+  'Lemon Water', 'Karela Juice', 'Walnuts', 'Omega-3 Supp', 'Vit D3',
+  'Magnesium', 'Walk Done', 'Pranayama/Breathing'
+];
+
+function getData(key) {
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch { return []; }
+}
+function setData(key, arr) {
+  localStorage.setItem(key, JSON.stringify(arr));
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('currentDate').textContent = new Date().toDateString();
+  document.getElementById('log-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('b-date').value = new Date().toISOString().split('T')[0];
+  buildRemedyChecks();
+  renderDailyTable();
+  renderBloodTable();
+  renderGoals();
+  // Pre-fill baseline
+  const blood = getData('blood');
+  if (blood.length === 0) {
+    const baseline = { date:'2026-03-08', tg:575, hdl:27, ldl:41, chol:183, vldl:115, hba1c:5.7, sugar:90, uric:8.4 };
+    setData('blood', [baseline]);
+    renderBloodTable();
+    renderGoals();
+  }
+  setTimeout(drawCharts, 100);
+});
+
+// ===== TABS =====
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'progress') setTimeout(drawCharts, 100);
+}
+
+// ===== REMEDY CHECKBOXES =====
+function buildRemedyChecks() {
+  const el = document.getElementById('remedyChecks');
+  el.innerHTML = REMEDIES.map((r, i) => `
+    <label class="check-item" id="chk-${i}" onclick="toggleCheck(${i})">
+      <input type="checkbox" id="remedy-${i}">
+      <span class="check-box" id="chkbox-${i}">✓</span>
+      ${r}
+    </label>
+  `).join('');
+}
+function toggleCheck(i) {
+  const item = document.getElementById('chk-' + i);
+  const chk = document.getElementById('remedy-' + i);
+  chk.checked = !chk.checked;
+  item.classList.toggle('checked', chk.checked);
+  document.getElementById('chkbox-' + i).textContent = chk.checked ? '✓' : '';
+}
+
+// ===== SCORE CALCULATOR =====
+function calcScore(entry) {
+  let score = 0;
+  const walk = parseInt(entry.walk) || 0;
+  const water = parseFloat(entry.water) || 0;
+  const sleep = parseFloat(entry.sleep) || 0;
+  const fast = parseInt(entry.fast) || 0;
+  const stress = parseInt(entry.stress) || 3;
+  const remedyCount = (entry.remedies || []).length;
+
+  if (walk >= 30) score += 25;
+  else if (walk >= 15) score += 12;
+  if (water >= 3) score += 15;
+  else if (water >= 2) score += 8;
+  if (sleep >= 7) score += 15;
+  else if (sleep >= 6) score += 8;
+  if (fast >= 14) score += 15;
+  else if (fast >= 12) score += 8;
+  score += Math.max(0, 10 - (stress - 1) * 2.5);
+  score += Math.min(20, remedyCount * 1.5);
+  const dietMap = { strict: 20, good: 15, moderate: 8, poor: 2, bad: 0 };
+  score += (dietMap[entry.diet] || 0);
+  return Math.min(100, Math.round(score));
+}
+
+// ===== SAVE DAILY LOG =====
+function saveLog() {
+  const date = document.getElementById('log-date').value;
+  if (!date) { showToast('⚠️ Select a date'); return; }
+  const remedies = REMEDIES.filter((_, i) => document.getElementById('remedy-' + i)?.checked);
+  const entry = {
+    date,
+    walk: document.getElementById('log-walk').value,
+    water: document.getElementById('log-water').value,
+    sleep: document.getElementById('log-sleep').value,
+    fast: document.getElementById('log-fast').value,
+    stress: document.getElementById('log-stress').value,
+    diet: document.getElementById('log-diet').value,
+    remedies,
+    notes: document.getElementById('log-notes').value,
+    score: 0
+  };
+  entry.score = calcScore(entry);
+  const logs = getData('daily');
+  const idx = logs.findIndex(l => l.date === date);
+  if (idx > -1) logs[idx] = entry; else logs.unshift(entry);
+  logs.sort((a, b) => b.date.localeCompare(a.date));
+  setData('daily', logs);
+  renderDailyTable();
+  showToast('✅ Day logged! Score: ' + entry.score + '/100');
+  // Reset checkboxes
+  REMEDIES.forEach((_, i) => {
+    const chk = document.getElementById('remedy-' + i);
+    if (chk) { chk.checked = false; document.getElementById('chk-' + i).classList.remove('checked'); document.getElementById('chkbox-' + i).textContent = ''; }
+  });
+  document.getElementById('log-notes').value = '';
+}
+
+// ===== RENDER DAILY TABLE =====
+function renderDailyTable() {
+  const logs = getData('daily');
+  const tbody = document.getElementById('dailyTbody');
+  document.getElementById('logCount').textContent = logs.length + ' entries';
+  if (!logs.length) {
+    tbody.innerHTML = '<tr><td colspan="10"><div class="empty-state"><span>📋</span>No logs yet.</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = logs.slice(0, 30).map(l => {
+    const sc = l.score || 0;
+    const scoreClass = sc >= 70 ? 'score-high' : sc >= 40 ? 'score-mid' : 'score-low';
+    return `<tr>
+      <td style="color:var(--text)">${l.date}</td>
+      <td>${l.walk || 0} min</td>
+      <td>${l.water || 0} L</td>
+      <td>${l.sleep || 0} h</td>
+      <td>${l.fast || 0} h</td>
+      <td>${l.stress || '-'}/5</td>
+      <td>${l.diet || '-'}</td>
+      <td style="max-width:120px;">${(l.remedies || []).slice(0,4).join(', ')}${(l.remedies||[]).length > 4 ? '...' : ''}</td>
+      <td><span class="score-pill ${scoreClass}">${sc}/100</span></td>
+      <td style="max-width:100px; color:var(--text3);">${(l.notes||'').substring(0,50)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== SAVE BLOOD =====
+function saveBlood() {
+  const date = document.getElementById('b-date').value;
+  if (!date) { showToast('⚠️ Select a date'); return; }
+  const entry = {
+    date,
+    tg: document.getElementById('b-tg').value,
+    hdl: document.getElementById('b-hdl').value,
+    ldl: document.getElementById('b-ldl').value,
+    chol: document.getElementById('b-chol').value,
+    vldl: document.getElementById('b-vldl').value,
+    hba1c: document.getElementById('b-hba1c').value,
+    sugar: document.getElementById('b-sugar').value,
+    uric: document.getElementById('b-uric').value,
+  };
+  const data = getData('blood');
+  const idx = data.findIndex(d => d.date === date);
+  if (idx > -1) data[idx] = entry; else data.push(entry);
+  data.sort((a, b) => a.date.localeCompare(b.date));
+  setData('blood', data);
+  renderBloodTable();
+  renderGoals();
+  drawCharts();
+  showToast('✅ Blood result saved!');
+}
+
+// ===== RENDER BLOOD TABLE =====
+function renderBloodTable() {
+  const data = getData('blood');
+  const tbody = document.getElementById('bloodTbody');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><span>🩸</span>No results yet.</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = [...data].reverse().map(d => {
+    const tgColor = d.tg < 150 ? 'var(--accent)' : d.tg < 300 ? 'var(--warn)' : 'var(--danger)';
+    const hdlColor = d.hdl >= 40 ? 'var(--accent)' : 'var(--danger)';
+    return `<tr>
+      <td style="color:var(--text)">${d.date}</td>
+      <td style="color:${tgColor};font-weight:600">${d.tg || '-'}</td>
+      <td style="color:${hdlColor};font-weight:600">${d.hdl || '-'}</td>
+      <td>${d.ldl || '-'}</td>
+      <td>${d.chol || '-'}</td>
+      <td>${d.vldl || '-'}</td>
+      <td style="color:${d.hba1c >= 5.7 ? 'var(--warn)' : 'var(--accent)'}">${d.hba1c || '-'}</td>
+      <td>${d.sugar || '-'}</td>
+      <td style="color:${d.uric >= 8.5 ? 'var(--danger)' : 'var(--text2)'}">${d.uric || '-'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== GOALS =====
+function renderGoals() {
+  const data = getData('blood');
+  const latest = data.length ? data[data.length - 1] : { tg: 575, hdl: 27, hba1c: 5.7, uric: 8.4 };
+  const goals = [
+    { name: 'Triglycerides', current: latest.tg, target: 150, unit: 'mg/dL', lower: true },
+    { name: 'HDL Cholesterol', current: latest.hdl, target: 50, unit: 'mg/dL', lower: false },
+    { name: 'HbA1c', current: latest.hba1c, target: 5.6, unit: '%', lower: true },
+    { name: 'Uric Acid', current: latest.uric, target: 6.0, unit: 'mg/dL', lower: true },
+    { name: 'VLDL', current: latest.vldl, target: 40, unit: 'mg/dL', lower: true },
+  ];
+  const grid = document.getElementById('goalsGrid');
+  grid.innerHTML = goals.map(g => {
+    let pct, good;
+    if (g.lower) {
+      const baseline = g.name === 'Triglycerides' ? 575 : g.name === 'VLDL' ? 115 : g.name === 'HbA1c' ? 5.7 : 8.4;
+      pct = Math.min(100, Math.max(0, ((baseline - g.current) / (baseline - g.target)) * 100));
+      good = g.current <= g.target;
+    } else {
+      pct = Math.min(100, (g.current / g.target) * 100);
+      good = g.current >= g.target;
+    }
+    const color = good ? 'var(--accent)' : g.current && (g.lower ? g.current < (parseFloat(g.current) * 1.2) : true) ? 'var(--warn)' : 'var(--danger)';
+    return `<div class="goal-card">
+      <div class="goal-name">${g.name}</div>
+      <div class="goal-current" style="color:${color}">${g.current || '?'}</div>
+      <div class="goal-target">${g.unit} · Target: ${g.lower ? '≤' : '≥'}${g.target}</div>
+      <div class="progress-bar"><div class="progress-fill ${good ? 'good' : ''}" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ===== CHARTS =====
+function drawCharts() {
+  const blood = getData('blood');
+  const daily = getData('daily');
+
+  drawLineChart('tgChart', blood.map(d => d.date), blood.map(d => parseFloat(d.tg)), 'Triglycerides', '#f87171', 150);
+  drawLineChart('hdlChart', blood.map(d => d.date), blood.map(d => parseFloat(d.hdl)), 'HDL', '#4ade80', 40);
+
+  const last14 = [...daily].reverse().slice(0, 14);
+  drawBarChart('walkChart', last14.map(d => d.date.slice(5)), last14.map(d => parseInt(d.walk)||0), 'Walk (min)', '#86efac');
+  drawDualChart('sleepChart', last14.map(d => d.date.slice(5)), last14.map(d => parseFloat(d.sleep)||0), last14.map(d => parseInt(d.stress)||0));
+}
+
+function drawLineChart(id, labels, data, label, color, targetVal) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 800;
+  const H = canvas.offsetHeight || 200;
+  canvas.width = W; canvas.height = H;
+  ctx.clearRect(0, 0, W, H);
+
+  if (!data.length || data.every(v => !v)) {
+    ctx.fillStyle = '#3d5c40';
+    ctx.font = '13px DM Mono, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Add blood results to see chart', W/2, H/2);
+    return;
+  }
+
+  const pad = { t: 20, r: 20, b: 40, l: 60 };
+  const cW = W - pad.l - pad.r;
+  const cH = H - pad.t - pad.b;
+  const maxV = Math.max(...data, targetVal || 0) * 1.1;
+  const minV = Math.min(...data, targetVal || Infinity) * 0.9;
+
+  const xPos = i => pad.l + (i / Math.max(data.length - 1, 1)) * cW;
+  const yPos = v => pad.t + cH - ((v - minV) / (maxV - minV || 1)) * cH;
+
+  // Grid
+  ctx.strokeStyle = '#1e2b1f';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (cH / 4) * i;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+    const val = maxV - (i/4) * (maxV - minV);
+    ctx.fillStyle = '#3d5c40'; ctx.font = '10px DM Mono'; ctx.textAlign = 'right';
+    ctx.fillText(Math.round(val), pad.l - 6, y + 4);
+  }
+
+  // Target line
+  if (targetVal) {
+    const ty = yPos(targetVal);
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = color + '66';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.l, ty); ctx.lineTo(W - pad.r, ty); ctx.stroke();
+    ctx.fillStyle = color + '99'; ctx.font = '9px DM Mono'; ctx.textAlign = 'left';
+    ctx.fillText('target ' + targetVal, pad.l + 4, ty - 4);
+    ctx.setLineDash([]);
+  }
+
+  // Area fill
+  const grad = ctx.createLinearGradient(0, pad.t, 0, H - pad.b);
+  grad.addColorStop(0, color + '33');
+  grad.addColorStop(1, color + '00');
+  ctx.beginPath();
+  ctx.moveTo(xPos(0), yPos(data[0]));
+  data.forEach((v, i) => ctx.lineTo(xPos(i), yPos(v)));
+  ctx.lineTo(xPos(data.length-1), H - pad.b);
+  ctx.lineTo(pad.l, H - pad.b);
+  ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+  data.forEach((v, i) => i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v)));
+  ctx.stroke();
+
+  // Dots + labels
+  data.forEach((v, i) => {
+    ctx.beginPath();
+    ctx.arc(xPos(i), yPos(v), 4, 0, Math.PI * 2);
+    ctx.fillStyle = color; ctx.fill();
+    ctx.fillStyle = '#e8f5e9'; ctx.font = 'bold 10px DM Mono'; ctx.textAlign = 'center';
+    ctx.fillText(Math.round(v), xPos(i), yPos(v) - 10);
+    if (labels[i]) {
+      ctx.fillStyle = '#3d5c40'; ctx.font = '9px DM Mono';
+      ctx.fillText(labels[i], xPos(i), H - pad.b + 14);
+    }
+  });
+}
+
+function drawBarChart(id, labels, data, label, color) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const W = canvas.offsetWidth || 800; const H = canvas.offsetHeight || 150;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+  if (!data.length) return;
+  const pad = { t: 10, r: 10, b: 30, l: 40 };
+  const cW = W - pad.l - pad.r; const cH = H - pad.t - pad.b;
+  const maxV = Math.max(...data, 30);
+  const bW = (cW / data.length) * 0.7;
+  const gap = (cW / data.length) * 0.3;
+
+  data.forEach((v, i) => {
+    const x = pad.l + (cW / data.length) * i + gap/2;
+    const bH = (v / maxV) * cH;
+    const y = pad.t + cH - bH;
+    const isGood = v >= 30;
+    ctx.fillStyle = isGood ? color : '#f87171';
+    ctx.beginPath();
+    ctx.roundRect(x, y, bW, bH, 3);
+    ctx.fill();
+    if (labels[i]) {
+      ctx.fillStyle = '#3d5c40'; ctx.font = '8px DM Mono'; ctx.textAlign = 'center';
+      ctx.fillText(labels[i], x + bW/2, H - 10);
+    }
+    if (v > 0) {
+      ctx.fillStyle = '#e8f5e9'; ctx.font = '9px DM Mono';
+      ctx.fillText(v, x + bW/2, y - 4);
+    }
+  });
+}
+
+function drawDualChart(id, labels, sleepData, stressData) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const W = canvas.offsetWidth || 800; const H = canvas.offsetHeight || 150;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+  if (!sleepData.length) return;
+  const pad = { t: 10, r: 80, b: 30, l: 40 };
+  const cW = W - pad.l - pad.r; const cH = H - pad.t - pad.b;
+  const xPos = i => pad.l + (i / Math.max(sleepData.length-1,1)) * cW;
+
+  // Sleep bars
+  const bW = (cW / sleepData.length) * 0.35;
+  sleepData.forEach((v, i) => {
+    const bH = (v / 10) * cH;
+    ctx.fillStyle = v >= 7 ? '#4ade8055' : '#fb923c55';
+    ctx.beginPath(); ctx.roundRect(xPos(i) - bW/2, pad.t + cH - bH, bW, bH, 2); ctx.fill();
+  });
+
+  // Stress line
+  ctx.beginPath();
+  ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2;
+  stressData.forEach((v, i) => {
+    const y = pad.t + cH - (v / 5) * cH;
+    i === 0 ? ctx.moveTo(xPos(i), y) : ctx.lineTo(xPos(i), y);
+  });
+  ctx.stroke();
+
+  // Legend
+  ctx.fillStyle = '#4ade8055'; ctx.fillRect(W - 70, 10, 12, 12);
+  ctx.fillStyle = '#7a9e7e'; ctx.font = '9px DM Mono'; ctx.textAlign = 'left';
+  ctx.fillText('Sleep hrs', W - 55, 20);
+  ctx.fillStyle = '#f87171'; ctx.fillRect(W - 70, 28, 12, 3);
+  ctx.fillText('Stress /5', W - 55, 35);
+
+  labels.forEach((l, i) => {
+    ctx.fillStyle = '#3d5c40'; ctx.font = '8px DM Mono'; ctx.textAlign = 'center';
+    ctx.fillText(l, xPos(i), H - 10);
+  });
+}
+
+// ===== CSV EXPORT =====
+function exportCSV(type) {
+  const data = getData(type === 'daily' ? 'daily' : 'blood');
+  if (!data.length) { showToast('No data to export'); return; }
+  let csv = '';
+  if (type === 'daily') {
+    csv = 'Date,Walk(min),Water(L),Sleep(hrs),Fast(hrs),Stress,Diet,Remedies,Score,Notes\n';
+    csv += data.map(d => [d.date, d.walk, d.water, d.sleep, d.fast, d.stress, d.diet, '"'+(d.remedies||[]).join(';')+'"', d.score, '"'+(d.notes||'')+'"'].join(',')).join('\n');
+  } else {
+    csv = 'Date,Triglycerides,HDL,LDL,Cholesterol,VLDL,HbA1c,FastingSugar,UricAcid\n';
+    csv += data.map(d => [d.date,d.tg,d.hdl,d.ldl,d.chol,d.vldl,d.hba1c,d.sugar,d.uric].join(',')).join('\n');
+  }
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = `ritesh_${type}_log_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('📥 CSV exported!');
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Polyfill for roundRect
+if (!CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+    if (w < 2*r) r = w/2; if (h < 2*r) r = h/2;
+    this.beginPath();
+    this.moveTo(x+r, y); this.arcTo(x+w, y, x+w, y+h, r);
+    this.arcTo(x+w, y+h, x, y+h, r); this.arcTo(x, y+h, x, y, r);
+    this.arcTo(x, y, x+w, y, r); this.closePath();
+    return this;
+  };
+}
+
+window.addEventListener('resize', () => {
+  const active = document.querySelector('.tab-content.active');
+  if (active && active.id === 'tab-progress') drawCharts();
+});
+</script>
+<a href="../" style="position:fixed;left:14px;bottom:14px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;font:500 13px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;text-decoration:none;color:#fff;background:rgba(22,24,29,.88);box-shadow:0 4px 16px rgba(0,0,0,.28);backdrop-filter:blur(8px)">← Bookmarks</a>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="dark light">
+<title>Bookmarks</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235b8cff'/%3E%3Cpath d='M11 8h10a1 1 0 0 1 1 1v15l-6-4-6 4V9a1 1 0 0 1 1-1z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="app.css">
+<script>
+  // Set the theme before first paint so there is no flash.
+  try {
+    var t = localStorage.getItem('pb:theme');
+    document.documentElement.dataset.theme =
+      t || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<div class="app" id="app" hidden>
+  <header class="topbar">
+    <a class="brand" href="./" title="Bookmarks">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-4-6 4V5a1 1 0 0 1 1-1z"/></svg>
+      <span>Bookmarks</span>
+    </a>
+
+    <div class="search">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="q" type="search" placeholder="Search bookmarks…" autocomplete="off"
+             spellcheck="false" aria-label="Search bookmarks">
+      <kbd class="hint" id="slash-hint">/</kbd>
+      <button class="clear" id="clear" type="button" aria-label="Clear search" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="actions">
+      <span class="sync" id="sync" title="Sync status"></span>
+      <button class="btn primary" id="add" type="button" title="Add bookmark (N)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Add</span>
+      </button>
+      <button class="btn icon" id="theme" type="button" title="Toggle theme" aria-label="Toggle theme">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.2 8.2 0 0 1 9.5 4 8.3 8.3 0 1 0 20 14.5z"/></svg>
+      </button>
+      <button class="btn icon" id="menu-btn" type="button" title="Menu" aria-label="Menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+      </button>
+      <div class="menu" id="menu" hidden>
+        <button type="button" data-act="categories">Manage categories</button>
+        <button type="button" data-act="export">Export backup</button>
+        <button type="button" data-act="import">Import backup</button>
+        <button type="button" data-act="reload">Reload from gist</button>
+        <hr>
+        <button type="button" data-act="signout" class="danger">Sign out of this browser</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="body">
+    <nav class="sidebar" id="sidebar" aria-label="Categories"></nav>
+    <main class="main" id="main"></main>
+  </div>
+</div>
+
+<!-- Setup / token gate -->
+<div class="setup" id="setup" hidden>
+  <div class="setup-card">
+    <svg class="setup-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-4-6 4V5a1 1 0 0 1 1-1z"/></svg>
+    <h1>Your bookmarks</h1>
+    <p class="lede">
+      Bookmarks are kept in a <strong>private GitHub gist</strong> on your account.
+      Paste a token once and this browser remembers it.
+    </p>
+    <ol class="steps">
+      <li>
+        <a id="token-link" href="https://github.com/settings/tokens/new?scopes=gist&amp;description=Personal%20Bookmarks" target="_blank" rel="noopener">Create a token</a>
+        — tick <strong>gist</strong> only, then Generate.
+      </li>
+      <li>Paste it below. It stays in this browser and is sent only to <code>api.github.com</code>.</li>
+    </ol>
+    <form id="setup-form" autocomplete="off">
+      <input id="token" type="password" placeholder="ghp_…" spellcheck="false"
+             autocomplete="off" aria-label="GitHub token">
+      <button class="btn primary wide" type="submit" id="setup-go">Connect</button>
+    </form>
+    <p class="setup-msg" id="setup-msg" role="status"></p>
+  </div>
+</div>
+
+<!-- Bookmark editor -->
+<dialog id="dlg-mark">
+  <form method="dialog" id="form-mark">
+    <h2 id="mark-title">Add bookmark</h2>
+    <label>URL
+      <input name="url" type="text" inputmode="url" placeholder="https://example.com"
+             spellcheck="false" required>
+    </label>
+    <label>Name
+      <input name="title" type="text" placeholder="Example" required>
+    </label>
+    <label>Description <span class="opt">optional</span>
+      <input name="desc" type="text" placeholder="What this is for">
+    </label>
+    <div class="row">
+      <label>Category
+        <select name="cat" id="mark-cat" required></select>
+      </label>
+      <label>Group <span class="opt">optional</span>
+        <input name="group" type="text" list="groups" placeholder="Sub-section" autocomplete="off">
+        <datalist id="groups"></datalist>
+      </label>
+    </div>
+    <menu>
+      <button type="button" class="btn danger-text" id="mark-delete" hidden>Delete</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn" data-close>Cancel</button>
+      <button type="submit" class="btn primary">Save</button>
+    </menu>
+  </form>
+</dialog>
+
+<!-- Category manager -->
+<dialog id="dlg-cats">
+  <div class="dlg-body">
+    <h2>Categories</h2>
+    <ul class="catlist" id="catlist"></ul>
+    <form id="form-cat" class="addcat" autocomplete="off">
+      <input name="name" type="text" placeholder="New category name" required>
+      <button class="btn primary" type="submit">Add</button>
+    </form>
+    <menu>
+      <span class="spacer"></span>
+      <button type="button" class="btn" data-close>Done</button>
+    </menu>
+  </div>
+</dialog>
+
+<!-- Confirm -->
+<dialog id="dlg-confirm">
+  <div class="dlg-body">
+    <h2 id="confirm-title">Are you sure?</h2>
+    <p id="confirm-text"></p>
+    <menu>
+      <span class="spacer"></span>
+      <button type="button" class="btn" data-close>Cancel</button>
+      <button type="button" class="btn danger" id="confirm-ok">Delete</button>
+    </menu>
+  </div>
+</dialog>
+
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

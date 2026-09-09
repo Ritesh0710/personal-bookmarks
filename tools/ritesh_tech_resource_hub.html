@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Tech Resource Hub v2</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f6f7f9;
+    --color-background-info: #eef4ff;
+    --color-border-secondary: #e3e6ea;
+    --color-border-tertiary: #eef0f3;
+    --color-border-info: #c7dbff;
+    --color-text-primary: #16181d;
+    --color-text-secondary: #5b6270;
+    --color-text-tertiary: #8b93a1;
+    --color-text-info: #1a4fb4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #0f1115;
+      --color-background-secondary: #171a20;
+      --color-background-info: #14243f;
+      --color-border-secondary: #262b34;
+      --color-border-tertiary: #1e222a;
+      --color-border-info: #2b4a7d;
+      --color-text-primary: #e9ecf1;
+      --color-text-secondary: #a1a9b8;
+      --color-text-tertiary: #737c8c;
+      --color-text-info: #7aa9ff;
+    }
+  }
+  html { background: var(--color-background-primary); }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background: var(--color-background-primary);
+    margin: 0 auto;
+    padding: 28px 20px 64px;
+    max-width: 1100px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .unused-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--color-text-secondary);
+    text-decoration: none; margin-bottom: 20px;
+    padding: 6px 10px; border-radius: 8px;
+    border: 1px solid var(--color-border-secondary);
+  }
+  .back:hover { color: var(--color-text-primary); background: var(--color-background-secondary); }
+  table { border-collapse: collapse; }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.wrap{padding:1rem 0}
+.search-row{display:flex;gap:8px;margin-bottom:1rem;align-items:center}
+.search-row input{flex:1;padding:8px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary)}
+.cat-scroll{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.cat-btn{padding:4px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);font-size:12px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);transition:all 0.15s}
+.cat-btn.active{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info)}
+.stats{font-size:12px;color:var(--color-text-tertiary);margin-bottom:1rem}
+.section{margin-bottom:1.5rem}
+.section-title{font-size:11px;font-weight:500;color:var(--color-text-tertiary);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem;padding:0 2px}
+.tech-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;overflow:hidden}
+.tech-header{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none}
+.tech-header:hover{background:var(--color-background-secondary)}
+.tech-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tech-name{font-size:14px;font-weight:500;color:var(--color-text-primary);flex:1}
+.tech-cat{font-size:11px;color:var(--color-text-tertiary);padding:2px 8px;border-radius:10px;border:0.5px solid var(--color-border-tertiary)}
+.chevron{font-size:12px;color:var(--color-text-tertiary);transition:transform 0.2s}
+.chevron.open{transform:rotate(180deg)}
+.resources{padding:0 14px 12px;display:none}
+.resources.open{display:block}
+.res-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-top:0.5px solid var(--color-border-tertiary)}
+.res-num{font-size:11px;font-weight:500;color:var(--color-text-tertiary);min-width:16px;margin-top:2px}
+.res-content{flex:1}
+.res-title{font-size:13px;font-weight:500;color:var(--color-text-info);cursor:pointer;text-decoration:none}
+.res-title:hover{text-decoration:underline}
+.res-type{display:inline-block;font-size:10px;padding:1px 6px;border-radius:8px;margin-left:6px;vertical-align:middle}
+.type-book{background:#EAF3DE;color:#3B6D11}
+.type-course{background:#E6F1FB;color:#185FA5}
+.type-site{background:#FAEEDA;color:#854F0B}
+.type-yt{background:#FCEBEB;color:#A32D2D}
+.type-docs{background:#EEEDFE;color:#534AB7}
+.res-desc{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.empty{text-align:center;padding:2rem;color:var(--color-text-tertiary);font-size:14px}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Tech resource hub for Ritesh — searchable learning resources for 60+ technologies</h2>
+
+<div class="search-row">
+  <i class="ti ti-search" style="color:var(--color-text-tertiary);font-size:16px" aria-hidden="true"></i>
+  <input type="text" id="searchInput" placeholder="Search technology or resource..." oninput="render()">
+</div>
+
+<div class="cat-scroll" id="catRow"></div>
+<div class="stats" id="stats"></div>
+<div id="content"></div>
+</div>
+
+<script>
+const cats = {
+  "Programming": "#185FA5",
+  "Azure Platform": "#0F6E56",
+  "Microsoft Fabric": "#534AB7",
+  "ML & Data Science": "#BA7517",
+  "Generative AI": "#993C1D",
+  "MLOps & DataOps": "#3B6D11",
+  "Big Data & Streaming": "#993556",
+  "Vector DBs": "#185FA5",
+  "Data Architecture": "#5F5E5A",
+  "BI & Visualization": "#639922",
+  "DevOps & Tools": "#3C3489"
+};
+
+const data = [
+  {name:"Python",cat:"Programming",resources:[
+    {title:"Python Official Docs",url:"https://docs.python.org/3/",type:"docs",desc:"The definitive reference — tutorial, library, language reference"},
+    {title:"Python for Data Analysis (Wes McKinney)",url:"https://wesmckinney.com/book/",type:"book",desc:"Pandas creator's book — free online, essential for data work"},
+    {title:"Real Python",url:"https://realpython.com",type:"site",desc:"High quality tutorials — OOP, async, testing, data science"},
+    {title:"Talk Python To Me Podcast",url:"https://talkpython.fm",type:"site",desc:"Covers advanced Python in production — great for senior roles"},
+    {title:"Fluent Python (Luciano Ramalho)",url:"https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/",type:"book",desc:"Deep Python internals — decorators, generators, protocols"}
+  ]},
+  {name:"PySpark",cat:"Programming",resources:[
+    {title:"Learning Spark (O'Reilly, Databricks)",url:"https://pages.databricks.com/rs/094-YMS-629/images/LearningSpark2.0.pdf",type:"book",desc:"Free PDF from Databricks — the standard Spark reference"},
+    {title:"Databricks PySpark Guide",url:"https://docs.databricks.com/en/pyspark/index.html",type:"docs",desc:"Official Databricks PySpark documentation with examples"},
+    {title:"Spark: The Definitive Guide",url:"https://www.oreilly.com/library/view/spark-the-definitive/9781491912201/",type:"book",desc:"Comprehensive guide to Spark internals and best practices"},
+    {title:"PySpark Tutorial (DataBricks YouTube)",url:"https://www.youtube.com/c/Databricks",type:"yt",desc:"Official Databricks YouTube — sessions on PySpark, Delta Lake"},
+    {title:"DataCamp PySpark Track",url:"https://www.datacamp.com/tracks/big-data-with-pyspark",type:"course",desc:"Hands-on PySpark for data engineering and ML"}
+  ]},
+  {name:"SQL / T-SQL / Spark SQL",cat:"Programming",resources:[
+    {title:"Mode SQL Tutorial",url:"https://mode.com/sql-tutorial/",type:"site",desc:"Beginner to advanced — window functions, CTEs, subqueries"},
+    {title:"LeetCode SQL",url:"https://leetcode.com/problemset/database/",type:"site",desc:"Most commonly tested in interviews — solve Medium/Hard problems"},
+    {title:"SQL for Data Scientists (Renee Teate)",url:"https://www.wiley.com/en-us/SQL+for+Data+Scientists-p-9781119669364",type:"book",desc:"Practical SQL for analytical work"},
+    {title:"Use The Index, Luke",url:"https://use-the-index-luke.com",type:"site",desc:"Deep dive on SQL query performance and indexing"},
+    {title:"T-SQL Fundamentals (Microsoft Press)",url:"https://www.microsoftpressstore.com/store/t-sql-fundamentals-9780138102104",type:"book",desc:"Best resource for T-SQL specific patterns and Azure SQL"}
+  ]},
+  {name:"DAX",cat:"Programming",resources:[
+    {title:"SQLBI — DAX Guide",url:"https://dax.guide",type:"site",desc:"Full DAX function reference with examples and notes"},
+    {title:"The Definitive Guide to DAX (Russo & Ferrari)",url:"https://www.sqlbi.com/books/the-definitive-guide-to-dax-2nd-edition/",type:"book",desc:"The best DAX book — by the creators of SQLBI"},
+    {title:"SQLBI YouTube",url:"https://www.youtube.com/@SQLBI",type:"yt",desc:"Marco Russo & Alberto Ferrari — deep DAX patterns"},
+    {title:"DAX Patterns",url:"https://www.daxpatterns.com",type:"site",desc:"Reusable DAX patterns for common analytical scenarios"},
+    {title:"Microsoft DAX Docs",url:"https://learn.microsoft.com/en-us/dax/",type:"docs",desc:"Official reference — good for quick function lookups"}
+  ]},
+  {name:"Azure Data Factory",cat:"Azure Platform",resources:[
+    {title:"Microsoft Learn — ADF",url:"https://learn.microsoft.com/en-us/azure/data-factory/",type:"docs",desc:"Official ADF docs with tutorials and architecture patterns"},
+    {title:"ADF YouTube Series (Guy in a Cube)",url:"https://www.youtube.com/@GuyInACube",type:"yt",desc:"Practical ADF walkthroughs including linked services, triggers"},
+    {title:"Pragmatic Works ADF Course",url:"https://www.youtube.com/c/PragmaticWorks",type:"yt",desc:"Free YouTube tutorials on ADF pipelines and patterns"},
+    {title:"ADF Cookbook (Community Blog)",url:"https://techcommunity.microsoft.com/t5/azure-data-factory-blog/bg-p/AzureDataFactoryBlog",type:"site",desc:"Official ADF blog with real-world patterns and announcements"},
+    {title:"Udemy — ADF Complete Guide",url:"https://www.udemy.com/topic/azure-data-factory/",type:"course",desc:"Hands-on projects with ADF pipelines and data flows"}
+  ]},
+  {name:"Azure Databricks",cat:"Azure Platform",resources:[
+    {title:"Databricks Academy",url:"https://academy.databricks.com",type:"course",desc:"Free learning paths — DE, ML, Streaming. Leads to certifications"},
+    {title:"Learning Spark 2.0 (Free PDF)",url:"https://pages.databricks.com/rs/094-YMS-629/images/LearningSpark2.0.pdf",type:"book",desc:"The official Databricks learning resource for Spark"},
+    {title:"Databricks Blog",url:"https://www.databricks.com/blog",type:"site",desc:"Best practices, architecture posts, product updates"},
+    {title:"Delta Lake Docs",url:"https://docs.delta.io/latest/index.html",type:"docs",desc:"Official Delta Lake documentation — ACID, time travel, CDC"},
+    {title:"Azure Databricks YouTube",url:"https://www.youtube.com/c/Databricks",type:"yt",desc:"Product demos, best practices talks, data+AI summit recordings"}
+  ]},
+  {name:"Azure Machine Learning",cat:"Azure Platform",resources:[
+    {title:"Microsoft Learn — AML",url:"https://learn.microsoft.com/en-us/azure/machine-learning/",type:"docs",desc:"Full AML documentation — pipelines, endpoints, MLOps"},
+    {title:"AML Python SDK Docs",url:"https://learn.microsoft.com/en-us/python/api/overview/azure/ml/",type:"docs",desc:"SDK v2 reference — essential for production ML on Azure"},
+    {title:"Pragmatic Works AML Videos",url:"https://www.youtube.com/@PragmaticWorks",type:"yt",desc:"Free walkthrough videos on AML components and pipelines"},
+    {title:"Designing ML Systems (Chip Huyen)",url:"https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/",type:"book",desc:"System design thinking — maps well to AML workflow design"},
+    {title:"dp-100 Study Guide (Microsoft)",url:"https://learn.microsoft.com/en-us/credentials/certifications/azure-data-scientist/",type:"site",desc:"DP-100 cert prep — covers AML deeply and maps to interviews"}
+  ]},
+  {name:"Azure Synapse Analytics",cat:"Azure Platform",resources:[
+    {title:"Microsoft Learn — Synapse",url:"https://learn.microsoft.com/en-us/azure/synapse-analytics/",type:"docs",desc:"Official docs — SQL pools, Spark pools, pipelines, integration"},
+    {title:"Synapse Analytics YouTube (Guy in a Cube)",url:"https://www.youtube.com/@GuyInACube",type:"yt",desc:"Practical Synapse tutorials and architecture comparisons"},
+    {title:"Pragmatic Works Synapse Series",url:"https://www.youtube.com/@PragmaticWorks",type:"yt",desc:"Free course-style walkthroughs on Synapse components"},
+    {title:"Azure Synapse Analytics Cookbook",url:"https://www.packtpub.com/en-us/product/azure-synapse-analytics-cookbook-9781803231501",type:"book",desc:"Recipe-based approach to Synapse patterns and integration"},
+    {title:"Tech Community — Synapse Blog",url:"https://techcommunity.microsoft.com/t5/azure-synapse-analytics-blog/bg-p/AzureSynapseAnalyticsBlog",type:"site",desc:"Official blog — real-world use cases and announcements"}
+  ]},
+  {name:"Azure Event Hubs / Stream Analytics",cat:"Azure Platform",resources:[
+    {title:"Microsoft Learn — Event Hubs",url:"https://learn.microsoft.com/en-us/azure/event-hubs/",type:"docs",desc:"Full Event Hubs docs — partitions, consumer groups, Kafka API"},
+    {title:"Microsoft Learn — Stream Analytics",url:"https://learn.microsoft.com/en-us/azure/stream-analytics/",type:"docs",desc:"SQL-like real-time stream processing on Azure"},
+    {title:"Streaming Systems (Tyler Akidau)",url:"https://www.oreilly.com/library/view/streaming-systems/9781491983867/",type:"book",desc:"Deep theory of streaming — watermarks, triggers, windowing"},
+    {title:"Azure Real-Time Analytics Blog",url:"https://techcommunity.microsoft.com/t5/azure-stream-analytics-blog/bg-p/AzureStreamAnalyticsBlog",type:"site",desc:"Patterns and best practices for Azure streaming"},
+    {title:"Karan Bhanot YouTube",url:"https://www.youtube.com/c/KaranBhanot",type:"yt",desc:"Azure streaming, Event Hubs + Databricks integration demos"}
+  ]},
+  {name:"Azure DevOps",cat:"Azure Platform",resources:[
+    {title:"Microsoft Learn — Azure DevOps",url:"https://learn.microsoft.com/en-us/azure/devops/",type:"docs",desc:"Pipelines, repos, boards, artifacts — full official docs"},
+    {title:"Azure DevOps YouTube (Microsoft)",url:"https://www.youtube.com/@AzureDevOps",type:"yt",desc:"Official channel — pipeline demos, YAML walkthroughs"},
+    {title:"DevOps Handbook (Kim, Humble, Willis)",url:"https://itrevolution.com/product/the-devops-handbook/",type:"book",desc:"Cultural and technical foundations of DevOps practices"},
+    {title:"Abhishek Veeramalla YouTube",url:"https://www.youtube.com/@AbhishekVeeramalla",type:"yt",desc:"Azure DevOps, CI/CD, GitHub Actions walkthroughs for data/ML"},
+    {title:"Azure Pipelines Docs",url:"https://learn.microsoft.com/en-us/azure/devops/pipelines/",type:"docs",desc:"YAML pipeline reference — triggers, agents, templates, secrets"}
+  ]},
+  {name:"Azure Key Vault / Security",cat:"Azure Platform",resources:[
+    {title:"Microsoft Learn — Key Vault",url:"https://learn.microsoft.com/en-us/azure/key-vault/",type:"docs",desc:"Secrets, keys, certificates — full reference with best practices"},
+    {title:"Azure Security Fundamentals",url:"https://learn.microsoft.com/en-us/azure/security/fundamentals/",type:"docs",desc:"Identity, RBAC, managed identity, service principals"},
+    {title:"SC-900 Study Path",url:"https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/",type:"course",desc:"Microsoft security foundations — covers KeyVault, Purview, Entra"},
+    {title:"Azure Security Best Practices Blog",url:"https://techcommunity.microsoft.com/t5/azure-security/bg-p/AzureSecurity",type:"site",desc:"Real-world security patterns for Azure data platforms"},
+    {title:"Cloud Security Alliance Resources",url:"https://cloudsecurityalliance.org/research/",type:"site",desc:"Framework-level security guidance for cloud data platforms"}
+  ]},
+  {name:"Azure OpenAI / AI Studio",cat:"Azure Platform",resources:[
+    {title:"Microsoft Learn — Azure OpenAI",url:"https://learn.microsoft.com/en-us/azure/ai-services/openai/",type:"docs",desc:"Full service docs — deployments, prompt engineering, fine-tuning"},
+    {title:"Azure AI Studio Docs",url:"https://learn.microsoft.com/en-us/azure/ai-studio/",type:"docs",desc:"AI Foundry / Studio — RAG, agents, evaluation, deployments"},
+    {title:"Azure OpenAI Cookbook",url:"https://github.com/Azure-Samples/openai",type:"site",desc:"Official Azure OpenAI samples and recipes on GitHub"},
+    {title:"Build LLM Apps on Azure (MS Learn path)",url:"https://learn.microsoft.com/en-us/training/paths/develop-ai-solutions-azure-openai/",type:"course",desc:"Free structured path — integrations, RAG, safety"},
+    {title:"AI Engineering (Chip Huyen, 2025)",url:"https://www.oreilly.com/library/view/ai-engineering/9781098166298/",type:"book",desc:"Production LLM systems — the most current and relevant book"}
+  ]},
+  {name:"Microsoft Fabric Lakehouse",cat:"Microsoft Fabric",resources:[
+    {title:"Microsoft Learn — Fabric DP-700",url:"https://learn.microsoft.com/en-us/credentials/certifications/fabric-analytics-engineer-associate/",type:"course",desc:"Official cert path — you're certified here, use for interview prep"},
+    {title:"Guy in a Cube — Fabric Series",url:"https://www.youtube.com/@GuyInACube",type:"yt",desc:"Best free Fabric content — lakehouse, pipelines, semantic models"},
+    {title:"Pragmatic Works Fabric Course",url:"https://www.youtube.com/@PragmaticWorks",type:"yt",desc:"Free structured Fabric walkthroughs including Lakehouse patterns"},
+    {title:"Fabric Community Blog",url:"https://community.fabric.microsoft.com/",type:"site",desc:"Real-world Q&A, patterns, and use cases from practitioners"},
+    {title:"Fabric Notes (Will Thompson)",url:"https://www.youtube.com/@WillThompson_BI",type:"yt",desc:"Detailed Fabric architecture and Lakehouse deep dives"}
+  ]},
+  {name:"Dataflow Gen2 / Data Pipeline",cat:"Microsoft Fabric",resources:[
+    {title:"Microsoft Learn — Fabric Data Pipelines",url:"https://learn.microsoft.com/en-us/fabric/data-factory/",type:"docs",desc:"Official docs — activities, triggers, monitoring in Fabric"},
+    {title:"Microsoft Learn — Dataflow Gen2",url:"https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",type:"docs",desc:"Power Query / M in Fabric — transformations, connectors"},
+    {title:"Guy in a Cube Dataflow Videos",url:"https://www.youtube.com/@GuyInACube",type:"yt",desc:"Practical Dataflow Gen2 patterns and gotchas"},
+    {title:"Power Query M Reference",url:"https://learn.microsoft.com/en-us/powerquery-m/",type:"docs",desc:"Full M language reference for Dataflow transformations"},
+    {title:"Fabric Community Forum",url:"https://community.fabric.microsoft.com/t5/Data-Factory-forums/bd-p/DataFactory",type:"site",desc:"Community Q&A on pipeline and Dataflow Gen2 patterns"}
+  ]},
+  {name:"KQL / Real-Time Analytics",cat:"Microsoft Fabric",resources:[
+    {title:"Microsoft Learn — KQL",url:"https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/",type:"docs",desc:"Full KQL language reference — tabular operators, aggregations"},
+    {title:"KQL Quick Reference",url:"https://aka.ms/kql_cheatsheet",type:"site",desc:"Official KQL cheat sheet — essential for interviews"},
+    {title:"Azure Data Explorer Free Cluster",url:"https://dataexplorer.azure.com/",type:"site",desc:"Practice KQL live on a free ADX cluster — best way to learn"},
+    {title:"Pluralsight KQL Course",url:"https://www.pluralsight.com/courses/kusto-query-language-kql-azure-data-explorer",type:"course",desc:"Structured KQL course from basics to advanced patterns"},
+    {title:"Real-Time Intelligence in Fabric (MS Learn)",url:"https://learn.microsoft.com/en-us/fabric/real-time-intelligence/",type:"docs",desc:"Eventstream, KQL Database, and Real-Time Dashboard docs"}
+  ]},
+  {name:"DirectLake / Semantic Models",cat:"Microsoft Fabric",resources:[
+    {title:"Microsoft Learn — DirectLake",url:"https://learn.microsoft.com/en-us/fabric/get-started/lakehouse-power-bi-reporting",type:"docs",desc:"DirectLake mode explained — framing, cold start, fallback"},
+    {title:"SQLBI — Fabric Semantic Models",url:"https://www.sqlbi.com/articles/",type:"site",desc:"Deep technical analysis of Semantic Model patterns in Fabric"},
+    {title:"Guy in a Cube — DirectLake Deep Dive",url:"https://www.youtube.com/@GuyInACube",type:"yt",desc:"Video walkthroughs on DirectLake mode and its trade-offs"},
+    {title:"The Definitive Guide to DAX",url:"https://www.sqlbi.com/books/the-definitive-guide-to-dax-2nd-edition/",type:"book",desc:"Essential for semantic model design and complex measures"},
+    {title:"Fabric Semantic Model Docs",url:"https://learn.microsoft.com/en-us/fabric/data-warehouse/semantic-models",type:"docs",desc:"Official Fabric semantic model documentation"}
+  ]},
+  {name:"Microsoft Purview / Governance",cat:"Microsoft Fabric",resources:[
+    {title:"Microsoft Learn — Purview",url:"https://learn.microsoft.com/en-us/purview/",type:"docs",desc:"Data governance, cataloging, lineage, classification in Purview"},
+    {title:"SC-400 Cert Study Path",url:"https://learn.microsoft.com/en-us/credentials/certifications/information-protection-administrator/",type:"course",desc:"Information protection track — sensitivity labels, DLP"},
+    {title:"Fabric Governance Docs",url:"https://learn.microsoft.com/en-us/fabric/governance/",type:"docs",desc:"Workspace roles, RLS, sensitivity labels in Microsoft Fabric"},
+    {title:"Data Governance (Ladley)",url:"https://www.oreilly.com/library/view/data-governance-the/9780128025024/",type:"book",desc:"Framework-level data governance concepts and implementation"},
+    {title:"Microsoft Purview YouTube",url:"https://www.youtube.com/results?search_query=microsoft+purview+tutorial",type:"yt",desc:"Microsoft official Purview demo and tutorial videos"}
+  ]},
+  {name:"Random Forest / XGBoost / Ensemble Methods",cat:"ML & Data Science",resources:[
+    {title:"Hands-On ML with Scikit-Learn (Géron)",url:"https://www.oreilly.com/library/view/hands-on-machine-learning/9781098125967/",type:"book",desc:"Best practical ML book — tree methods, ensembles explained clearly"},
+    {title:"XGBoost Documentation",url:"https://xgboost.readthedocs.io/en/stable/",type:"docs",desc:"Official XGBoost docs — parameters, tutorials, best practices"},
+    {title:"StatQuest with Josh Starmer (YouTube)",url:"https://www.youtube.com/@statquest",type:"yt",desc:"Best visual explanations of RF, XGBoost, gradient boosting"},
+    {title:"Kaggle ML Courses",url:"https://www.kaggle.com/learn/intermediate-machine-learning",type:"course",desc:"Free — covers XGBoost, missing values, pipelines practically"},
+    {title:"The Elements of Statistical Learning",url:"https://hastie.su.domains/ElemStatLearn/",type:"book",desc:"Free PDF — mathematical depth on ensemble methods"}
+  ]},
+  {name:"Time Series Forecasting",cat:"ML & Data Science",resources:[
+    {title:"Forecasting: Principles & Practice (Hyndman)",url:"https://otexts.com/fpp3/",type:"book",desc:"Free online — the definitive time series forecasting textbook"},
+    {title:"Nixtla / StatsForecast Docs",url:"https://nixtlaverse.nixtla.io/statsforecast/",type:"docs",desc:"Modern Python forecasting library — production-grade, fast"},
+    {title:"Darts Library Docs",url:"https://unit8co.github.io/darts/",type:"docs",desc:"Time series library with unified API for classical and DL models"},
+    {title:"PyData YouTube — Forecasting Talks",url:"https://www.youtube.com/@PyDataTV",type:"yt",desc:"Conference talks on production time series at scale"},
+    {title:"Kaggle Time Series Course",url:"https://www.kaggle.com/learn/time-series",type:"course",desc:"Free practical course — seasonality, lags, linear regression"}
+  ]},
+  {name:"Classification Models",cat:"ML & Data Science",resources:[
+    {title:"Hands-On ML (Géron) — Chapters 3-4",url:"https://www.oreilly.com/library/view/hands-on-machine-learning/9781098125967/",type:"book",desc:"Classification deep dive — metrics, multiclass, calibration"},
+    {title:"Scikit-learn User Guide",url:"https://scikit-learn.org/stable/user_guide.html",type:"docs",desc:"Full reference for all classifiers, pipelines, model selection"},
+    {title:"StatQuest YouTube",url:"https://www.youtube.com/@statquest",type:"yt",desc:"Logistic regression, SVM, neural net classification visuals"},
+    {title:"ML from Scratch (Victor Zhou)",url:"https://victorzhou.com/blog/intro-to-neural-networks/",type:"site",desc:"Build classifiers from scratch — deep conceptual understanding"},
+    {title:"Imbalanced-learn Docs",url:"https://imbalanced-learn.org/stable/",type:"docs",desc:"SMOTE, oversampling, class weights — critical for credit/churn"}
+  ]},
+  {name:"NLP & Transformers",cat:"ML & Data Science",resources:[
+    {title:"HuggingFace NLP Course",url:"https://huggingface.co/learn/nlp-course/",type:"course",desc:"Free — BERT, transformers, fine-tuning, pipelines in HF"},
+    {title:"Speech and Language Processing (Jurafsky)",url:"https://web.stanford.edu/~jurafsky/slp3/",type:"book",desc:"Free PDF — Stanford NLP textbook, classification to transformers"},
+    {title:"Jay Alammar Blog",url:"https://jalammar.github.io",type:"site",desc:"Best visual explanations of transformers, attention, BERT, GPT"},
+    {title:"Hands-On LLMs (Alammar & Grootendorst)",url:"https://www.oreilly.com/library/view/hands-on-large-language/9781098150952/",type:"book",desc:"Practical LLM book — text classification, embeddings, fine-tuning"},
+    {title:"Fast.ai NLP Course",url:"https://course.fast.ai/",type:"course",desc:"Free — practical deep learning, strong NLP sections"}
+  ]},
+  {name:"Feature Engineering",cat:"ML & Data Science",resources:[
+    {title:"Feature Engineering for ML (Alice Zheng)",url:"https://www.oreilly.com/library/view/feature-engineering-for/9781491953235/",type:"book",desc:"Best dedicated book on feature engineering techniques"},
+    {title:"Kaggle Feature Engineering Course",url:"https://www.kaggle.com/learn/feature-engineering",type:"course",desc:"Free practical course — mutual info, target encoding, clustering"},
+    {title:"Feast Feature Store Docs",url:"https://docs.feast.dev",type:"docs",desc:"Production feature store — understand how features are served"},
+    {title:"Applied Predictive Modeling (Kuhn)",url:"https://appliedpredictivemodeling.com",type:"book",desc:"Feature selection and preprocessing for production models"},
+    {title:"ML Mastery — Feature Engineering",url:"https://machinelearningmastery.com/category/data-preparation/",type:"site",desc:"Practical tutorials on feature scaling, encoding, selection"}
+  ]},
+  {name:"Recommendation Systems",cat:"ML & Data Science",resources:[
+    {title:"Practical Recommender Systems (Falk)",url:"https://www.manning.com/books/practical-recommender-systems",type:"book",desc:"End-to-end recommender systems with Python code"},
+    {title:"Google Rec Sys Course",url:"https://developers.google.com/machine-learning/recommendation",type:"course",desc:"Free — collaborative filtering, content-based, two-tower models"},
+    {title:"Surprise Library Docs",url:"https://surpriselib.com",type:"docs",desc:"Python library for collaborative filtering — fast prototyping"},
+    {title:"RecSys Conference YouTube",url:"https://www.youtube.com/results?search_query=recsys+conference",type:"yt",desc:"Academic and industry talks on production recommender systems"},
+    {title:"Two Tower Models (Google Blog)",url:"https://blog.research.google/2020/09/recommending-what-video-to-watch-next.html",type:"site",desc:"Deep dive on Google's two-tower retrieval architecture"}
+  ]},
+  {name:"RAG Systems",cat:"Generative AI",resources:[
+    {title:"LangChain RAG Docs",url:"https://python.langchain.com/docs/use_cases/question_answering/",type:"docs",desc:"Official RAG implementation guide with LangChain components"},
+    {title:"Building RAG Applications (DeepLearning.AI)",url:"https://www.deeplearning.ai/short-courses/building-evaluating-advanced-rag/",type:"course",desc:"Free short course — advanced RAG patterns, evaluation"},
+    {title:"Llamaindex RAG Guide",url:"https://docs.llamaindex.ai/en/stable/understanding/rag.html",type:"docs",desc:"Production-focused RAG — query engines, retrievers, routers"},
+    {title:"Pinecone Learning Center",url:"https://www.pinecone.io/learn/",type:"site",desc:"RAG, embeddings, vector search — high quality free content"},
+    {title:"AI Engineering (Chip Huyen)",url:"https://www.oreilly.com/library/view/ai-engineering/9781098166298/",type:"book",desc:"Chapter on RAG architecture — production patterns, evaluation"}
+  ]},
+  {name:"LangChain / LlamaIndex",cat:"Generative AI",resources:[
+    {title:"LangChain Python Docs",url:"https://python.langchain.com/docs/",type:"docs",desc:"Official docs — chains, agents, memory, retrievers, tools"},
+    {title:"LlamaIndex Docs",url:"https://docs.llamaindex.ai/",type:"docs",desc:"Full LlamaIndex reference — query engines, data connectors"},
+    {title:"LangChain YouTube Channel",url:"https://www.youtube.com/@LangChain",type:"yt",desc:"Official tutorials and use case walkthroughs"},
+    {title:"DeepLearning.AI LangChain Course",url:"https://www.deeplearning.ai/short-courses/langchain-for-llm-application-development/",type:"course",desc:"Free — Andrew Ng + LangChain creator, covers core abstractions"},
+    {title:"Generative AI with LangChain (Aneesha Bakharia)",url:"https://www.packtpub.com/en-us/product/generative-ai-with-langchain-9781835083468",type:"book",desc:"Practical LangChain book — chains, agents, RAG projects"}
+  ]},
+  {name:"LangGraph / CrewAI / AutoGen",cat:"Generative AI",resources:[
+    {title:"LangGraph Docs",url:"https://langchain-ai.github.io/langgraph/",type:"docs",desc:"Official LangGraph — stateful agents, graph flow, human-in-loop"},
+    {title:"CrewAI Docs",url:"https://docs.crewai.com",type:"docs",desc:"Multi-agent orchestration — roles, tasks, crews, tools"},
+    {title:"AutoGen Docs (Microsoft)",url:"https://microsoft.github.io/autogen/",type:"docs",desc:"Microsoft's multi-agent framework — conversations, code execution"},
+    {title:"LangGraph Tutorial (DeepLearning.AI)",url:"https://www.deeplearning.ai/short-courses/ai-agents-in-langgraph/",type:"course",desc:"Free — agentic patterns with LangGraph, ReAct, planning"},
+    {title:"Agentic AI (Harrison Chase Blog)",url:"https://blog.langchain.dev/",type:"site",desc:"LangChain blog — real-world agentic patterns and case studies"}
+  ]},
+  {name:"Prompt Engineering",cat:"Generative AI",resources:[
+    {title:"Prompt Engineering Guide",url:"https://www.promptingguide.ai",type:"site",desc:"Comprehensive reference — few-shot, CoT, ReAct, self-consistency"},
+    {title:"DeepLearning.AI Prompt Engineering Course",url:"https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/",type:"course",desc:"Free — Isa Fulford + Andrew Ng, best starting point"},
+    {title:"Anthropic Prompt Library",url:"https://docs.anthropic.com/en/prompt-library/library",type:"site",desc:"Real prompt examples across use cases — study the structure"},
+    {title:"OpenAI Prompt Engineering Guide",url:"https://platform.openai.com/docs/guides/prompt-engineering",type:"docs",desc:"Official best practices — clear instructions, structured outputs"},
+    {title:"The Art of Prompt Design (Lilian Weng Blog)",url:"https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/",type:"site",desc:"Deep technical breakdown of prompting techniques with theory"}
+  ]},
+  {name:"Fine-Tuning (LoRA / QLoRA)",cat:"Generative AI",resources:[
+    {title:"HuggingFace PEFT Docs",url:"https://huggingface.co/docs/peft/index",type:"docs",desc:"Official PEFT library — LoRA, QLoRA, adapters with examples"},
+    {title:"QLoRA Paper (Dettmers et al.)",url:"https://arxiv.org/abs/2305.14314",type:"site",desc:"Original QLoRA paper — understand the method deeply for interviews"},
+    {title:"Fine-Tuning LLMs (DeepLearning.AI)",url:"https://www.deeplearning.ai/short-courses/finetuning-large-language-models/",type:"course",desc:"Free short course — when to fine-tune, LoRA, evaluation"},
+    {title:"Axolotl Fine-Tuning Tool",url:"https://github.com/axolotl-ai-cloud/axolotl",type:"site",desc:"Production fine-tuning framework — used widely in open-source LLMs"},
+    {title:"Unsloth Fine-Tuning (YouTube)",url:"https://www.youtube.com/results?search_query=unsloth+fine+tuning",type:"yt",desc:"Efficient fine-tuning demos — QLoRA on consumer hardware"}
+  ]},
+  {name:"LLM Evaluation / LLMOps",cat:"Generative AI",resources:[
+    {title:"AI Engineering (Chip Huyen)",url:"https://www.oreilly.com/library/view/ai-engineering/9781098166298/",type:"book",desc:"LLMOps chapter — evaluation, deployment, monitoring, cost control"},
+    {title:"RAGAS Docs",url:"https://docs.ragas.io/en/stable/",type:"docs",desc:"RAG evaluation framework — faithfulness, relevance, context recall"},
+    {title:"LangSmith Docs",url:"https://docs.smith.langchain.com",type:"docs",desc:"LLM observability — tracing, evaluation, prompt versioning"},
+    {title:"Evidently AI Blog",url:"https://www.evidentlyai.com/blog",type:"site",desc:"LLM and ML monitoring — drift, hallucination, data quality"},
+    {title:"Building LLMs for Production (Towards AI)",url:"https://towardsai.net/book",type:"book",desc:"Production LLM systems — evaluation, serving, cost management"}
+  ]},
+  {name:"Semantic Kernel",cat:"Generative AI",resources:[
+    {title:"Semantic Kernel Docs (Microsoft)",url:"https://learn.microsoft.com/en-us/semantic-kernel/overview/",type:"docs",desc:"Official SK docs — plugins, planners, memory, Azure OpenAI"},
+    {title:"SK GitHub Samples",url:"https://github.com/microsoft/semantic-kernel/tree/main/python/samples",type:"site",desc:"Official Python samples — plugins, agents, RAG patterns"},
+    {title:"Microsoft Learn — SK Path",url:"https://learn.microsoft.com/en-us/training/modules/intro-to-semantic-kernel/",type:"course",desc:"Free structured introduction to Semantic Kernel"},
+    {title:"SK YouTube (Microsoft Reactor)",url:"https://www.youtube.com/results?search_query=semantic+kernel+microsoft",type:"yt",desc:"Microsoft Reactor demos — Semantic Kernel in production"},
+    {title:"Developing AI Apps with SK (Packt)",url:"https://www.packtpub.com/en-us/product/developing-apps-with-gpt-4-and-chatgpt-9781098152796",type:"book",desc:"Azure OpenAI + SK app development practical guide"}
+  ]},
+  {name:"MLflow",cat:"MLOps & DataOps",resources:[
+    {title:"MLflow Official Docs",url:"https://mlflow.org/docs/latest/index.html",type:"docs",desc:"Full reference — tracking, models, registry, deployments, recipes"},
+    {title:"MLflow Tutorials",url:"https://mlflow.org/docs/latest/tutorials-and-examples/index.html",type:"docs",desc:"Official step-by-step tutorials for all MLflow components"},
+    {title:"Made With ML — MLOps",url:"https://madewithml.com/#mlops",type:"site",desc:"Best free MLOps curriculum — MLflow featured throughout"},
+    {title:"Databricks MLflow YouTube",url:"https://www.youtube.com/@Databricks",type:"yt",desc:"MLflow on Databricks — experiment tracking, model registry"},
+    {title:"Introducing MLOps (O'Reilly)",url:"https://www.oreilly.com/library/view/introducing-mlops/9781492083283/",type:"book",desc:"MLflow-centric MLOps book — monitoring, governance, automation"}
+  ]},
+  {name:"CI/CD for ML (GitHub Actions / Azure DevOps)",cat:"MLOps & DataOps",resources:[
+    {title:"GitHub Actions Docs",url:"https://docs.github.com/en/actions",type:"docs",desc:"Full reference — workflows, secrets, environments, reusable workflows"},
+    {title:"Made With ML CI/CD Section",url:"https://madewithml.com/#mlops",type:"site",desc:"ML-specific CI/CD patterns — testing, deployment, monitoring"},
+    {title:"Continuous Delivery for ML (CD4ML)",url:"https://martinfowler.com/articles/cd4ml.html",type:"site",desc:"Foundational Martin Fowler article on CI/CD patterns for ML"},
+    {title:"Abhishek Veeramalla YouTube",url:"https://www.youtube.com/@AbhishekVeeramalla",type:"yt",desc:"GitHub Actions, Azure DevOps CI/CD walkthroughs with ML context"},
+    {title:"DevOps Handbook (Kim, Humble, Willis)",url:"https://itrevolution.com/product/the-devops-handbook/",type:"book",desc:"The cultural and technical foundation of CI/CD at scale"}
+  ]},
+  {name:"Docker / Kubernetes",cat:"MLOps & DataOps",resources:[
+    {title:"Docker Official Docs",url:"https://docs.docker.com/get-started/",type:"docs",desc:"Get started guide through Dockerfile, compose, registries"},
+    {title:"Kubernetes Official Docs",url:"https://kubernetes.io/docs/home/",type:"docs",desc:"Full K8s reference — pods, deployments, services, Helm"},
+    {title:"KodeKloud YouTube",url:"https://www.youtube.com/@KodeKloud",type:"yt",desc:"Best free Docker + Kubernetes tutorials for beginners to advanced"},
+    {title:"Kubernetes in Action (Luksa)",url:"https://www.manning.com/books/kubernetes-in-action-second-edition",type:"book",desc:"Most comprehensive K8s book — essential for senior interviews"},
+    {title:"Play with Kubernetes",url:"https://labs.play-with-k8s.com",type:"site",desc:"Free browser-based K8s playground — practice without local setup"}
+  ]},
+  {name:"Apache Airflow",cat:"MLOps & DataOps",resources:[
+    {title:"Airflow Official Docs",url:"https://airflow.apache.org/docs/apache-airflow/stable/index.html",type:"docs",desc:"DAGs, operators, sensors, connections — full reference"},
+    {title:"Astronomer — Airflow Guides",url:"https://www.astronomer.io/guides/",type:"site",desc:"Best Airflow tutorials outside official docs — patterns, best practices"},
+    {title:"Data Pipelines with Apache Airflow (Harenslak)",url:"https://www.manning.com/books/data-pipelines-with-apache-airflow",type:"book",desc:"Comprehensive Airflow book — DAG design, testing, operators"},
+    {title:"Marc Lamberti YouTube",url:"https://www.youtube.com/@MarcLamberti",type:"yt",desc:"Best Airflow YouTube content — practical tutorials and real use cases"},
+    {title:"Astronomer Academy",url:"https://academy.astronomer.io",type:"course",desc:"Free Airflow courses — Astronomer-certified learning paths"}
+  ]},
+  {name:"Drift Detection / Model Monitoring",cat:"MLOps & DataOps",resources:[
+    {title:"Evidently AI Docs",url:"https://docs.evidentlyai.com",type:"docs",desc:"Best open-source monitoring library — data drift, model quality"},
+    {title:"Evidently AI Blog",url:"https://www.evidentlyai.com/blog",type:"site",desc:"Conceptual guides on drift types, monitoring strategies"},
+    {title:"Designing ML Systems (Chip Huyen) — Ch 8-9",url:"https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/",type:"book",desc:"Data distribution shift, monitoring in production — essential reading"},
+    {title:"Whylogs / WhyLabs Docs",url:"https://whylogs.readthedocs.io/en/latest/",type:"docs",desc:"Data logging for ML monitoring — profile and detect anomalies"},
+    {title:"ML Monitoring Patterns (Neptune Blog)",url:"https://neptune.ai/blog/ml-model-monitoring-best-practices",type:"site",desc:"Practical monitoring patterns — metrics, alerting, retraining triggers"}
+  ]},
+  {name:"DVC (Data Version Control)",cat:"MLOps & DataOps",resources:[
+    {title:"DVC Official Docs",url:"https://dvc.org/doc",type:"docs",desc:"Full DVC reference — data versioning, pipelines, experiments"},
+    {title:"DVC Tutorials",url:"https://dvc.org/doc/start",type:"docs",desc:"Official getting started guides — step by step with Git integration"},
+    {title:"Made With ML — Data Management",url:"https://madewithml.com/#mlops",type:"site",desc:"DVC in context of a full MLOps system"},
+    {title:"Iterative AI YouTube",url:"https://www.youtube.com/@IterativeAI",type:"yt",desc:"Official DVC and CML tutorials from the creators"},
+    {title:"Practical MLOps (Noah Gift)",url:"https://www.oreilly.com/library/view/practical-mlops/9781098103002/",type:"book",desc:"DVC covered in production MLOps context with cloud examples"}
+  ]},
+  {name:"Apache Kafka",cat:"Big Data & Streaming",resources:[
+    {title:"Kafka: The Definitive Guide (Confluent, free)",url:"https://www.confluent.io/resources/kafka-the-definitive-guide-v2/",type:"book",desc:"Free from Confluent — topics, partitions, consumers, streams"},
+    {title:"Confluent Developer — Kafka 101",url:"https://developer.confluent.io/courses/apache-kafka/events/",type:"course",desc:"Free structured course — producers, consumers, schema registry"},
+    {title:"Conduktor Kafka YouTube",url:"https://www.youtube.com/@Conduktor",type:"yt",desc:"Best Kafka tutorials on YouTube — visual and practical"},
+    {title:"Kafka Streams Docs",url:"https://kafka.apache.org/documentation/streams/",type:"docs",desc:"Stream processing with Kafka — stateful ops, joins, windowing"},
+    {title:"Designing Event-Driven Systems (Nicoll)",url:"https://www.confluent.io/designing-event-driven-systems/",type:"book",desc:"Free — event sourcing, CQRS, Kafka architectural patterns"}
+  ]},
+  {name:"Delta Lake",cat:"Big Data & Streaming",resources:[
+    {title:"Delta Lake: The Definitive Guide (Databricks)",url:"https://www.databricks.com/resources/ebook/delta-lake-the-definitive-guide",type:"book",desc:"Free PDF from Databricks — the complete Delta Lake reference"},
+    {title:"Delta Lake Official Docs",url:"https://docs.delta.io/latest/index.html",type:"docs",desc:"Full reference — ACID transactions, time travel, schema evolution"},
+    {title:"Databricks Delta Lake YouTube",url:"https://www.youtube.com/@Databricks",type:"yt",desc:"Deep dives on Delta Lake internals and production patterns"},
+    {title:"Delta Lake Blog",url:"https://delta.io/blog/",type:"site",desc:"Official Delta Lake blog — performance tips and new features"},
+    {title:"Learning Spark — Delta Chapters",url:"https://pages.databricks.com/rs/094-YMS-629/images/LearningSpark2.0.pdf",type:"book",desc:"Free — Delta Lake chapters in Learning Spark 2.0"}
+  ]},
+  {name:"Apache Spark (Core Concepts)",cat:"Big Data & Streaming",resources:[
+    {title:"Learning Spark 2.0 (Free PDF)",url:"https://pages.databricks.com/rs/094-YMS-629/images/LearningSpark2.0.pdf",type:"book",desc:"Free — the go-to Spark book from Databricks engineers"},
+    {title:"Spark: The Definitive Guide (Chambers & Zaharia)",url:"https://www.oreilly.com/library/view/spark-the-definitive/9781491912201/",type:"book",desc:"Deep internals — Catalyst optimizer, execution model, streaming"},
+    {title:"Databricks Academy — Spark",url:"https://academy.databricks.com",type:"course",desc:"Free structured Spark learning path with Databricks certification"},
+    {title:"Data Engineering with Apache Spark (YouTube)",url:"https://www.youtube.com/@SeattleDataGuy",type:"yt",desc:"Seattle Data Guy — practical Spark and data engineering content"},
+    {title:"Spark Official Docs",url:"https://spark.apache.org/docs/latest/",type:"docs",desc:"Complete reference — RDDs, DataFrames, Streaming, SQL, MLlib"}
+  ]},
+  {name:"Pinecone / ChromaDB / Milvus",cat:"Vector DBs",resources:[
+    {title:"Pinecone Learning Center",url:"https://www.pinecone.io/learn/",type:"site",desc:"Best vector database learning content — embeddings, search, RAG"},
+    {title:"ChromaDB Docs",url:"https://docs.trychroma.com",type:"docs",desc:"Local/embedded vector DB — great for prototyping RAG systems"},
+    {title:"Milvus Docs",url:"https://milvus.io/docs",type:"docs",desc:"Production-scale vector DB — indexing, filtering, performance"},
+    {title:"Vector Databases (Qdrant Blog)",url:"https://qdrant.tech/articles/",type:"site",desc:"Best conceptual explanations of HNSW, ANN search, indexing"},
+    {title:"Building AI Apps with Vector DBs (DeepLearning.AI)",url:"https://www.deeplearning.ai/short-courses/building-applications-vector-databases/",type:"course",desc:"Free course — semantic search, RAG, recommendations with Pinecone"}
+  ]},
+  {name:"Azure AI Search",cat:"Vector DBs",resources:[
+    {title:"Microsoft Learn — Azure AI Search",url:"https://learn.microsoft.com/en-us/azure/search/",type:"docs",desc:"Full docs — vector search, hybrid search, semantic ranking, indexers"},
+    {title:"Azure AI Search + OpenAI (MS Cookbook)",url:"https://github.com/Azure-Samples/azure-search-openai-demo",type:"site",desc:"Official RAG reference architecture with Azure AI Search"},
+    {title:"AI Search Blog (Microsoft Tech Community)",url:"https://techcommunity.microsoft.com/t5/ai-azure-ai-services-blog/bg-p/AIServicesAIBlog",type:"site",desc:"Patterns, hybrid search, vector search announcements"},
+    {title:"Vector Search Explained (YouTube)",url:"https://www.youtube.com/results?search_query=azure+ai+search+vector",type:"yt",desc:"Microsoft demos on vector + hybrid search in Azure AI Search"},
+    {title:"Pinecone Vector DB Concepts",url:"https://www.pinecone.io/learn/vector-database/",type:"site",desc:"Vendor-neutral conceptual explainer — applies to all vector DBs"}
+  ]},
+  {name:"Medallion Architecture (Bronze/Silver/Gold)",cat:"Data Architecture",resources:[
+    {title:"Databricks Medallion Blog",url:"https://www.databricks.com/glossary/medallion-architecture",type:"site",desc:"Official Databricks explanation with diagrams and examples"},
+    {title:"Fundamentals of Data Engineering (Reis & Housley)",url:"https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/",type:"book",desc:"Data architecture chapter — medallion and lakehouse patterns"},
+    {title:"Delta Lake Medallion Tutorial",url:"https://docs.delta.io/latest/delta-batch.html",type:"docs",desc:"Implementing medallion pattern with Delta Lake on Databricks"},
+    {title:"Architecture Patterns for DE (YouTube — Seattle Data Guy)",url:"https://www.youtube.com/@SeattleDataGuy",type:"yt",desc:"Medallion architecture explained visually with real use cases"},
+    {title:"Data Engineering Design Patterns (community)",url:"https://dataengineering.wiki/Concepts/Data+Architecture",type:"site",desc:"Community wiki — medallion, lakehouse, warehouse patterns"}
+  ]},
+  {name:"Data Warehousing (Kimball / Star Schema)",cat:"Data Architecture",resources:[
+    {title:"The Data Warehouse Toolkit (Kimball & Ross)",url:"https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/books/data-warehouse-dw-toolkit/",type:"book",desc:"The original source — fact tables, dimensions, slowly changing dims"},
+    {title:"Kimball Group Website",url:"https://www.kimballgroup.com",type:"site",desc:"Free design tips, dimensional modeling Q&A from Kimball himself"},
+    {title:"Dimensional Modeling YouTube (Kahan Data Solutions)",url:"https://www.youtube.com/@KahanDataSolutions",type:"yt",desc:"Best visual explanations of star schema, dimensions, facts"},
+    {title:"dbt Learn",url:"https://courses.getdbt.com",type:"course",desc:"Free — modern data warehouse modeling with dbt, SQL patterns"},
+    {title:"Data Modeling for Analytics (blog series)",url:"https://www.holistics.io/blog/the-three-types-of-data-models/",type:"site",desc:"Holistics blog — dimensional vs normalized modeling compared"}
+  ]},
+  {name:"CDC (Change Data Capture)",cat:"Data Architecture",resources:[
+    {title:"Debezium Docs",url:"https://debezium.io/documentation/",type:"docs",desc:"Most popular CDC tool — connectors for SQL Server, Postgres, MySQL"},
+    {title:"Delta Lake CDC Docs",url:"https://docs.delta.io/latest/delta-change-data-feed.html",type:"docs",desc:"CDC with Delta Lake change data feed — merge patterns"},
+    {title:"CDC Patterns (Databricks Blog)",url:"https://www.databricks.com/blog/2021/06/09/how-to-simplify-cdc-with-delta-lakes-change-data-feed.html",type:"site",desc:"Databricks blog on CDC with Delta Lake — practical patterns"},
+    {title:"Streaming Systems (Tyler Akidau) — CDC Chapter",url:"https://www.oreilly.com/library/view/streaming-systems/9781491983867/",type:"book",desc:"Theoretical basis of data change processing at scale"},
+    {title:"Fivetran CDC Blog",url:"https://www.fivetran.com/blog/what-is-change-data-capture",type:"site",desc:"Vendor-neutral explainer on CDC types — polling, log-based, triggers"}
+  ]},
+  {name:"Data Governance / Quality",cat:"Data Architecture",resources:[
+    {title:"Data Governance (Ladley)",url:"https://www.oreilly.com/library/view/data-governance-the/9780128025024/",type:"book",desc:"Framework-level governance — ownership, stewardship, policies"},
+    {title:"Great Expectations Docs",url:"https://docs.greatexpectations.io",type:"docs",desc:"Best open-source data quality tool — expectations, checkpoints"},
+    {title:"DAMA DMBOK (Data Management Body of Knowledge)",url:"https://www.dama.org/cpages/body-of-knowledge",type:"book",desc:"The industry standard framework for data management domains"},
+    {title:"Atlan Data Catalog Blog",url:"https://atlan.com/blog/",type:"site",desc:"Practical data catalog, lineage, and observability patterns"},
+    {title:"Data Quality Fundamentals (O'Reilly)",url:"https://www.oreilly.com/library/view/data-quality-fundamentals/9781098112035/",type:"book",desc:"Modern data quality — anomaly detection, validation, pipelines"}
+  ]},
+  {name:"ETL / ELT Design",cat:"Data Architecture",resources:[
+    {title:"Fundamentals of Data Engineering",url:"https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/",type:"book",desc:"Best modern data engineering book — ETL vs ELT, tools, patterns"},
+    {title:"dbt (Data Build Tool) Docs",url:"https://docs.getdbt.com",type:"docs",desc:"Modern ELT — transformations in SQL, testing, documentation"},
+    {title:"dbt Learn Courses",url:"https://courses.getdbt.com",type:"course",desc:"Free — dbt fundamentals, advanced patterns, data testing"},
+    {title:"Data Engineering Podcast",url:"https://www.dataengineeringpodcast.com",type:"site",desc:"Episodes on ETL tools, patterns, architecture decisions"},
+    {title:"ADF Data Flows Docs",url:"https://learn.microsoft.com/en-us/azure/data-factory/concepts-data-flow-overview",type:"docs",desc:"ADF Data Flows — code-free ELT transformations at scale"}
+  ]},
+  {name:"Power BI",cat:"BI & Visualization",resources:[
+    {title:"SQLBI",url:"https://www.sqlbi.com",type:"site",desc:"The best Power BI and DAX resource on the internet, period"},
+    {title:"Guy in a Cube YouTube",url:"https://www.youtube.com/@GuyInACube",type:"yt",desc:"Best free Power BI YouTube channel — weekly new content"},
+    {title:"The Definitive Guide to DAX (Russo & Ferrari)",url:"https://www.sqlbi.com/books/the-definitive-guide-to-dax-2nd-edition/",type:"book",desc:"Essential for any serious Power BI developer"},
+    {title:"Microsoft PL-300 Study Path",url:"https://learn.microsoft.com/en-us/credentials/certifications/power-bi-data-analyst-associate/",type:"course",desc:"Power BI Data Analyst cert — covers report design to deployment"},
+    {title:"Power BI Community",url:"https://community.powerbi.com",type:"site",desc:"Official community — Q&A, DAX help, report design forums"}
+  ]},
+  {name:"Git",cat:"DevOps & Tools",resources:[
+    {title:"Pro Git Book (Free)",url:"https://git-scm.com/book/en/v2",type:"book",desc:"The complete Git reference — free online, covers branching, rebasing"},
+    {title:"Oh My Git! (Interactive Game)",url:"https://ohmygit.org",type:"site",desc:"Learn Git through a visual game — best for building intuition"},
+    {title:"Git Branching (Interactive)",url:"https://learngitbranching.js.org",type:"site",desc:"Visual interactive Git tutorial — branching, merging, rebase"},
+    {title:"Atlassian Git Tutorials",url:"https://www.atlassian.com/git/tutorials",type:"site",desc:"Comprehensive written tutorials from basic to advanced workflows"},
+    {title:"The Git Parable (blog)",url:"https://tom.preston-werner.com/2009/05/19/the-git-parable.html",type:"site",desc:"Conceptual foundation of how Git was designed — builds deep understanding"}
+  ]},
+  {name:"Streamlit",cat:"DevOps & Tools",resources:[
+    {title:"Streamlit Official Docs",url:"https://docs.streamlit.io",type:"docs",desc:"Full reference — components, layout, state, caching, deployment"},
+    {title:"Streamlit Gallery",url:"https://streamlit.io/gallery",type:"site",desc:"Real app examples — study code, replicate patterns for interviews"},
+    {title:"30 Days of Streamlit",url:"https://30days.streamlit.app",type:"course",desc:"Free interactive course — daily challenges covering all components"},
+    {title:"Data Professor YouTube",url:"https://www.youtube.com/@DataProfessor",type:"yt",desc:"Best Streamlit tutorial channel — ML app demos from scratch"},
+    {title:"Building Data Apps with Streamlit (Packt)",url:"https://www.packtpub.com/en-us/product/building-data-science-applications-with-fastapi-9781803258751",type:"book",desc:"Practical Streamlit + FastAPI book for ML app deployment"}
+  ]},
+  {name:"Designing ML Systems",cat:"ML & Data Science",resources:[
+    {title:"Designing ML Systems (Chip Huyen)",url:"https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/",type:"book",desc:"THE most interview-relevant ML book — read this cover to cover"},
+    {title:"Chip Huyen Blog",url:"https://huyenchip.com/blog",type:"site",desc:"Companion blog — real ML system design, production patterns"},
+    {title:"Full Stack Deep Learning",url:"https://fullstackdeeplearning.com",type:"course",desc:"Free — end-to-end ML system design and deployment"},
+    {title:"Made With ML",url:"https://madewithml.com",type:"site",desc:"Free MLOps curriculum — design patterns and production ML"},
+    {title:"ML System Design Interview (Alex Xu)",url:"https://www.amazon.com/Machine-Learning-System-Design-Interview/dp/1736049127",type:"book",desc:"Interview-focused ML system design — great for 40LPA level prep"}
+  ]},
+];
+
+let activecat = "All";
+let openCards = new Set();
+
+function getCatColor(cat){return cats[cat]||"#888"}
+
+const allCats = ["All",...Object.keys(cats)];
+
+function render(){
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  const catRow = document.getElementById("catRow");
+  catRow.innerHTML = allCats.map(c=>`<button class="cat-btn${activecat===c?" active":""}" onclick="setcat('${c}')">${c}</button>`).join("");
+
+  let filtered = data.filter(t=>{
+    const catMatch = activecat==="All"||t.cat===activecat;
+    const qMatch = !q || t.name.toLowerCase().includes(q)||t.cat.toLowerCase().includes(q)||t.resources.some(r=>r.title.toLowerCase().includes(q)||r.desc.toLowerCase().includes(q));
+    return catMatch && qMatch;
+  });
+
+  document.getElementById("stats").textContent = `${filtered.length} of ${data.length} technologies`;
+
+  const byCat = {};
+  filtered.forEach(t=>{
+    if(!byCat[t.cat]) byCat[t.cat]=[];
+    byCat[t.cat].push(t);
+  });
+
+  const content = document.getElementById("content");
+  if(filtered.length===0){content.innerHTML='<div class="empty">No technologies match your search</div>';return;}
+
+  content.innerHTML = Object.entries(byCat).map(([cat,techs])=>`
+    <div class="section">
+      <div class="section-title" style="color:${getCatColor(cat)}">${cat}</div>
+      ${techs.map(t=>{
+        const isOpen = openCards.has(t.name)||!!q;
+        return `<div class="tech-card">
+          <div class="tech-header" onclick="toggle('${t.name}')">
+            <div class="tech-dot" style="background:${getCatColor(t.cat)}"></div>
+            <span class="tech-name">${t.name}</span>
+            <span class="tech-cat">${t.cat}</span>
+            <i class="ti ti-chevron-down chevron${isOpen?" open":""}"></i>
+          </div>
+          <div class="resources${isOpen?" open":""}">
+            ${t.resources.map((r,i)=>`
+              <div class="res-item">
+                <span class="res-num">${i+1}</span>
+                <div class="res-content">
+                  <div><a class="res-title" href="${r.url}" target="_blank">${r.title}</a><span class="res-type type-${r.type}">${r.type}</span></div>
+                  <div class="res-desc">${r.desc}</div>
+                </div>
+              </div>`).join("")}
+          </div>
+        </div>`;
+      }).join("")}
+    </div>`).join("");
+}
+
+function setcat(c){activecat=c;render();}
+function toggle(name){
+  if(openCards.has(name)) openCards.delete(name);
+  else openCards.add(name);
+  render();
+}
+
+render();
+</script>
+
+<a href="../" style="position:fixed;left:14px;bottom:14px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;font:500 13px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;text-decoration:none;color:#fff;background:rgba(22,24,29,.88);box-shadow:0 4px 16px rgba(0,0,0,.28);backdrop-filter:blur(8px)">← Bookmarks</a>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Never commit bookmark data or tokens — the gist is the source of truth.
+bookmarks*.json
+*.seed.json
+.env
+.env.*
+.DS_Store
+Thumbs.db
+node_modules/

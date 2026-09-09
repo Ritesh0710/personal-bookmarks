@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Stats & Math Roadmap</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f6f7f9;
+    --color-background-info: #eef4ff;
+    --color-border-secondary: #e3e6ea;
+    --color-border-tertiary: #eef0f3;
+    --color-border-info: #c7dbff;
+    --color-text-primary: #16181d;
+    --color-text-secondary: #5b6270;
+    --color-text-tertiary: #8b93a1;
+    --color-text-info: #1a4fb4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #0f1115;
+      --color-background-secondary: #171a20;
+      --color-background-info: #14243f;
+      --color-border-secondary: #262b34;
+      --color-border-tertiary: #1e222a;
+      --color-border-info: #2b4a7d;
+      --color-text-primary: #e9ecf1;
+      --color-text-secondary: #a1a9b8;
+      --color-text-tertiary: #737c8c;
+      --color-text-info: #7aa9ff;
+    }
+  }
+  html { background: var(--color-background-primary); }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background: var(--color-background-primary);
+    margin: 0 auto;
+    padding: 28px 20px 64px;
+    max-width: 1100px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .unused-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--color-text-secondary);
+    text-decoration: none; margin-bottom: 20px;
+    padding: 6px 10px; border-radius: 8px;
+    border: 1px solid var(--color-border-secondary);
+  }
+  .back:hover { color: var(--color-text-primary); background: var(--color-background-secondary); }
+  table { border-collapse: collapse; }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .container { padding: 1rem 0; }
+  .phase-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+  .tab-btn {
+    padding: 6px 12px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary);
+    background: var(--color-background-primary); color: var(--color-text-secondary);
+    cursor: pointer; font-size: 13px; font-weight: 400; transition: all 0.15s;
+  }
+  .tab-btn:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+  .tab-btn.active { background: #1D9E75; color: #fff; border-color: #1D9E75; font-weight: 500; }
+  .phase-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; }
+  .phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .phase-badge { background: #E1F5EE; color: #0F6E56; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+  .phase-title { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
+  .phase-subtitle { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
+  .topics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+  .topic-item { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+  .topic-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .topic-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+  .why-box { background: #E1F5EE; border-radius: var(--border-radius-md); padding: 12px 14px; margin-bottom: 1rem; }
+  .why-label { font-size: 11px; font-weight: 500; color: #0F6E56; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .why-text { font-size: 13px; color: #085041; line-height: 1.6; }
+  .analogy-box { border: 0.5px solid var(--color-border-tertiary); border-left: 3px solid #1D9E75; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 10px 14px; margin-bottom: 1rem; }
+  .analogy-label { font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .analogy-text { font-size: 13px; color: var(--color-text-primary); line-height: 1.6; font-style: italic; }
+  .resources-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .resource-tag { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: 20px; padding: 4px 10px; font-size: 12px; color: var(--color-text-secondary); }
+  .nav-row { display: flex; gap: 8px; margin-top: 1rem; justify-content: flex-end; }
+  .nav-btn { padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); cursor: pointer; font-size: 13px; }
+  .nav-btn:hover { background: var(--color-background-secondary); }
+  .nav-btn.primary { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+  .nav-btn.primary:hover { background: #0F6E56; }
+  @media (max-width: 500px) { .topics-grid { grid-template-columns: 1fr; } }
+</style>
+
+<div class="container">
+  <h2 class="sr-only">Statistics and Mathematics Roadmap — In-Depth Guide</h2>
+  <div class="phase-tabs" id="tabs"></div>
+  <div class="phase-card" id="card"></div>
+</div>
+
+<script>
+const phases = [
+  {
+    id: 1, badge: "Phase 1", title: "Core Statistics",
+    subtitle: "The foundation — understand your data before modeling it",
+    why: "Every ML model is only as good as your understanding of the data feeding it. Core stats lets you spot bad data, wrong assumptions, and misleading summaries before they corrupt your model.",
+    analogy: "Think of this as learning to read before writing. You cannot build meaningful ML systems without first understanding what your numbers are actually saying.",
+    topics: [
+      { name: "Descriptive Statistics", desc: "Mean tells you center. Variance tells you spread. Skewness tells you if data leans left or right. Kurtosis tells you how heavy the tails are — crucial for outlier detection." },
+      { name: "Data Distributions", desc: "Normal (bell curve), Binomial (yes/no events), Poisson (count of rare events per time), Exponential (time between events). Most real ML assumptions rely on knowing which distribution fits your data." },
+      { name: "Correlation vs Causation", desc: "Ice cream sales and drownings are correlated — but ice cream doesn't cause drowning (heat does both). This mistake kills real business decisions every day." },
+      { name: "Sampling & Bias", desc: "Random sampling, stratified sampling, convenience sampling. Biased samples produce biased models. Selection bias, survivorship bias — understanding these prevents catastrophic ML failures." },
+      { name: "Data Visualization", desc: "Histograms reveal distributions. Box plots reveal outliers. Scatter plots reveal relationships. You must SEE your data before you model it." }
+    ],
+    resources: ["Khan Academy Stats", "Statistics by StatQuest (YouTube)", "Think Stats (book)", "Pandas + Matplotlib"]
+  },
+  {
+    id: 2, badge: "Phase 2", title: "Inferential Statistics",
+    subtitle: "Draw conclusions from samples — make decisions under uncertainty",
+    why: "In the real world, you never have all the data. Inferential statistics lets you make confident, mathematically-backed decisions from small samples — which is exactly what A/B testing, research, and business analytics require.",
+    analogy: "You taste one spoonful of soup to judge the whole pot. Inferential statistics tells you how confident you can be in that judgment, and how big a spoonful you need.",
+    topics: [
+      { name: "Probability Theory", desc: "Sample spaces, events, probability rules. Joint probability P(A∩B), marginal P(A), conditional P(A|B). The absolute bedrock of all ML — every model output is a probability." },
+      { name: "Random Variables & Expectation", desc: "A random variable maps outcomes to numbers. Expectation (E[X]) is the long-run average. Variance Var(X) = E[(X−μ)²]. These define how distributions behave mathematically." },
+      { name: "Confidence Intervals", desc: "Instead of saying 'the mean is 5', you say 'the mean is between 4.2 and 5.8 with 95% confidence'. CIs communicate uncertainty — every good data scientist reports them." },
+      { name: "Hypothesis Testing", desc: "z-test (known variance, large n), t-test (unknown variance, small n), chi-square (categorical data). You set up H₀ (null) vs H₁ (alternative) and gather evidence to reject or not reject H₀." },
+      { name: "p-values & Significance", desc: "p-value = probability of seeing your data if H₀ is true. If p < 0.05, results are 'statistically significant'. But p-values are widely misunderstood — they do NOT measure effect size or practical importance." }
+    ],
+    resources: ["StatQuest YouTube", "OpenIntro Statistics", "scipy.stats in Python", "Naked Statistics (book)"]
+  },
+  {
+    id: 3, badge: "Phase 3", title: "Advanced Statistics",
+    subtitle: "Industry-grade tools for experimentation and causal reasoning",
+    why: "Companies like Netflix, Uber, and Google run thousands of A/B tests simultaneously. Causal inference separates the effect of a drug from placebo. Time series powers stock prediction and demand forecasting. These are the tools that separate junior from senior data scientists.",
+    analogy: "If core stats is learning to drive, this is learning to drive in snow, on a racetrack, at night. Same car — entirely different skill level.",
+    topics: [
+      { name: "A/B Testing", desc: "Randomly split users into control/treatment groups, measure metric difference, test for significance. Critical: define success metric BEFORE running the test, or you'll p-hack your way to false conclusions." },
+      { name: "Power Analysis", desc: "Determines the minimum sample size needed to detect a real effect. Power = 1 − β (probability of detecting a true effect). Underpowered tests miss real effects; overpowered tests waste resources." },
+      { name: "Bayesian Statistics", desc: "Update beliefs with data: P(hypothesis|data) ∝ P(data|hypothesis) × P(hypothesis). Prior → Likelihood → Posterior. More flexible than frequentist stats, especially with small samples." },
+      { name: "Time Series Analysis", desc: "Trend (long-term direction), seasonality (repeating cycles), noise (random variation). ARIMA models. Stationarity. Autocorrelation. Powers demand forecasting, stock analysis, IoT sensor data." },
+      { name: "Causal Inference", desc: "Regression diagnostics, instrumental variables, difference-in-differences, propensity score matching. Answers 'does X cause Y?' not just 'are X and Y related?'. Critical in healthcare, policy, economics." }
+    ],
+    resources: ["Mostly Harmless Econometrics", "Bayesian Analysis with Python", "Forecasting: P&P (book)", "PyMC3, statsmodels"]
+  },
+  {
+    id: 4, badge: "Phase 4", title: "Linear Algebra",
+    subtitle: "The language of machine learning — data lives in matrices",
+    why: "Every ML model is fundamentally matrix math. Neural nets are chains of matrix multiplications. PCA is eigendecomposition. Embeddings in LLMs like GPT are vectors in 768+ dimensional space. You cannot understand ML deeply without this.",
+    analogy: "If ML is a car, linear algebra is the engine. You can drive without knowing how the engine works — but you cannot fix it, optimize it, or build a better one.",
+    topics: [
+      { name: "Vectors & Matrices", desc: "Vectors are ordered lists of numbers (1D arrays). Matrices are 2D grids. Tensors are n-dimensional arrays — what PyTorch and TensorFlow operate on. All your data is one of these." },
+      { name: "Matrix Multiplication", desc: "A (m×n) × B (n×p) = C (m×p). Rows of A dot with columns of B. Not commutative (AB ≠ BA). Every neural network layer is: output = activation(W·x + b), where W is a weight matrix." },
+      { name: "Eigenvalues & Eigenvectors", desc: "For matrix A, eigenvector v satisfies Av = λv. λ is the eigenvalue. Eigenvectors are directions that only scale under transformation. Core to PCA, stability analysis, and Google's PageRank." },
+      { name: "SVD & PCA", desc: "SVD: A = UΣVᵀ. Decomposes any matrix into rotation × scaling × rotation. PCA uses SVD to find directions of maximum variance — used for dimensionality reduction, noise removal, and visualization." },
+      { name: "Embeddings", desc: "Words, images, users — all converted to dense vectors (embeddings) where geometric distance = semantic similarity. 'king' − 'man' + 'woman' ≈ 'queen' is pure vector arithmetic." }
+    ],
+    resources: ["3Blue1Brown Essence of Linear Algebra", "Gilbert Strang MIT OCW", "NumPy", "fastai Part 2"]
+  },
+  {
+    id: 5, badge: "Phase 5", title: "Calculus for ML",
+    subtitle: "How models learn — measuring and minimizing error",
+    why: "Training a neural network is an optimization problem: find weights W that minimize loss L(W). Calculus tells the model exactly how to adjust each weight to reduce loss. Without calculus, gradient descent — the engine of all modern ML — makes no sense.",
+    analogy: "Imagine you're blindfolded on a hilly landscape and want to reach the lowest valley. Derivatives tell you which direction is downhill at your current position. Gradient descent is you walking that direction repeatedly.",
+    topics: [
+      { name: "Limits & Derivatives", desc: "Derivative f'(x) = slope of f at x = lim(h→0) [f(x+h)−f(x)]/h. For ML: if increasing weight w by ε increases loss by 0.3ε, the derivative is 0.3 — telling us to decrease w." },
+      { name: "Partial Derivatives", desc: "When f depends on multiple variables (e.g. w₁, w₂, ..., wₙ), ∂f/∂wᵢ measures how f changes w.r.t. wᵢ alone, holding others fixed. A neural net with millions of weights has millions of partial derivatives." },
+      { name: "Gradient & Jacobian", desc: "Gradient ∇f = vector of all partial derivatives. Points in direction of steepest ascent. Negate it to descend. Jacobian = matrix of partial derivatives for vector-valued functions. Used in backprop." },
+      { name: "Chain Rule", desc: "d/dx[f(g(x))] = f'(g(x)) · g'(x). Deep networks are composed functions: L(w) = loss(predict(layer3(layer2(layer1(w))))). Chain rule lets us compute ∂L/∂w through all layers." },
+      { name: "Optimization Landscapes", desc: "Loss surface in weight space. Local minima, saddle points, flat regions, sharp vs flat minima. Deep nets rarely have local minima — saddle points are the real challenge." }
+    ],
+    resources: ["3Blue1Brown Calculus series", "Khanacademy Multivariable Calculus", "MIT 18.01/18.02 OCW", "Andrej Karpathy's micrograd"]
+  },
+  {
+    id: 6, badge: "Phase 6", title: "Probability & Information Theory",
+    subtitle: "Quantify uncertainty — the math behind prediction and learning",
+    why: "ML models are probability machines. Every output — a classification, a generated sentence, a recommendation — is really a probability distribution. Information theory tells us how to measure uncertainty, surprise, and information content, which directly defines the loss functions we train on.",
+    analogy: "Information theory asks: how surprised should you be when something happens? Low probability event = high surprise = high information. A coin flip gives 1 bit of information. This 'surprise' is exactly what cross-entropy loss measures.",
+    topics: [
+      { name: "Conditional Probability", desc: "P(A|B) = P(A∩B)/P(B). Given B happened, how likely is A? This is the core of Naive Bayes classifiers, Hidden Markov Models, and causal reasoning." },
+      { name: "Bayes' Theorem", desc: "P(H|E) = P(E|H)·P(H)/P(E). Update your belief in hypothesis H after seeing evidence E. Prior × Likelihood / Normalizer = Posterior. Used in spam filters, medical diagnosis, Bayesian NNs." },
+      { name: "Entropy & Cross-Entropy", desc: "Entropy H(p) = −Σ p(x)log p(x). Measures average surprise/uncertainty. Cross-entropy H(p,q) = −Σ p(x)log q(x) measures how well predicted distribution q approximates true p. This IS the classification loss." },
+      { name: "KL Divergence", desc: "KL(P‖Q) = Σ P(x) log(P(x)/Q(x)). Measures 'information lost' when using Q to approximate P. Always ≥ 0. Used in VAEs (variational autoencoders), RL (PPO algorithm), and model compression." },
+      { name: "Maximum Likelihood Estimation", desc: "Find parameters θ that maximize P(data|θ). Equivalent to minimizing negative log-likelihood. Linear regression MSE loss IS MLE under Gaussian noise assumption. Cross-entropy loss IS MLE for classification." }
+    ],
+    resources: ["Information Theory by Cover & Thomas", "Chris Olah's blog", "Pattern Recognition & ML (Bishop)", "PyTorch distributions module"]
+  },
+  {
+    id: 7, badge: "Phase 7", title: "Optimization & Numerical Methods",
+    subtitle: "Make models learn efficiently — the science of getting better",
+    why: "Training ML models IS an optimization problem. Gradient descent and its variants (Adam, RMSprop, AdaGrad) are how every modern model learns. Regularization prevents overfitting. Understanding convergence tells you when to stop training and why your loss might explode.",
+    analogy: "If calculus shows you which way is downhill, optimization is the strategy for hiking down: how big a step to take, whether to use momentum, when to slow down near a valley, and how to avoid getting stuck.",
+    topics: [
+      { name: "Convex vs Non-Convex", desc: "Convex: any local min = global min (e.g., linear regression loss). Non-convex: many local minima and saddle points (neural nets). Deep nets are surprisingly easy to optimize despite non-convexity." },
+      { name: "Gradient Descent Variants", desc: "Batch GD: use all data (stable but slow). SGD: one sample at a time (noisy but fast). Mini-batch GD: small batches (best of both). Adam: adaptive learning rates per parameter using momentum + RMS. Default choice for deep learning." },
+      { name: "Newton & Quasi-Newton", desc: "Newton's method uses the Hessian (2nd derivative matrix) for faster convergence. Too expensive for deep nets (Hessian is n×n for n parameters). L-BFGS approximates it — used in scipy optimization and some shallow ML." },
+      { name: "Regularization L1 & L2", desc: "L2 (Ridge): adds λ‖w‖² to loss → penalizes large weights → shrinks all weights → prevents overfitting. L1 (Lasso): adds λ‖w‖₁ → promotes sparsity → some weights go exactly to 0 → feature selection." },
+      { name: "Stability & Convergence", desc: "Learning rate too high → loss explodes. Too low → training is glacially slow. Gradient clipping prevents exploding gradients. Batch norm stabilizes training. Loss curves diagnose all of this." }
+    ],
+    resources: ["Convex Optimization (Boyd & Vandenberghe)", "fast.ai practical deep learning", "PyTorch optimizers docs", "Andrej Karpathy's NN: Zero to Hero"]
+  },
+  {
+    id: 8, badge: "Phase 8", title: "Math for Deep Learning & GenAI",
+    subtitle: "The mathematics behind modern AI — transformers, LLMs, and beyond",
+    why: "GPT, Stable Diffusion, DALL-E, Claude — all run on the same mathematical primitives: matrix multiply, softmax, log-softmax, attention scores. Understanding this math lets you debug model behavior, read research papers, and make architectural decisions rather than treating AI as a black box.",
+    analogy: "This is like reading the source code of intelligence. Attention is just matrix multiplication + softmax. A transformer is just stacked attention blocks + feedforward layers. The 'magic' is just well-designed math, run at enormous scale.",
+    topics: [
+      { name: "Loss Functions & Gradients", desc: "MSE = Σ(ŷ−y)²/n for regression. Cross-entropy = −Σ y·log(ŷ) for classification. Every loss has a clean gradient formula. The gradient of cross-entropy w.r.t. logits is simply (ŷ − y) — elegant and computationally efficient." },
+      { name: "Activation Functions", desc: "ReLU = max(0,x): fast, sparse, avoids vanishing gradients. GELU ≈ x·Φ(x): smoother, used in GPT/BERT. Sigmoid: squashes to (0,1) for binary output. Softmax: converts logit vector to probability distribution." },
+      { name: "Matrix Calculus for Transformers", desc: "Self-attention: Attention(Q,K,V) = softmax(QKᵀ/√d_k)V. Q, K, V are linear projections of input. QKᵀ gives pairwise similarity scores. Dividing by √d_k prevents gradient vanishing in dot products." },
+      { name: "Attention Mechanism", desc: "Each token attends to every other token. Attention weights = softmax(similarity scores). Multi-head attention runs h parallel attention heads and concatenates them. Captures different types of relationships simultaneously." },
+      { name: "Scaling Laws", desc: "Chinchilla scaling law: for compute budget C, optimal model size N ∝ √C and dataset size D ∝ √C. Loss scales as power law with model size, data, and compute. This is why GPT-4 exists — bigger consistently beats clever." }
+    ],
+    resources: ["Attention is All You Need (paper)", "Andrej Karpathy's makemore & nanoGPT", "Illustrated Transformer (Jay Alammar)", "Sebastian Raschka's LLM book"]
+  }
+];
+
+let current = 0;
+
+function render() {
+  const p = phases[current];
+  document.getElementById('tabs').innerHTML = phases.map((ph, i) =>
+    `<button class="tab-btn ${i === current ? 'active' : ''}" onclick="goto(${i})">${ph.badge}</button>`
+  ).join('');
+
+  document.getElementById('card').innerHTML = `
+    <div class="phase-header">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+          <span class="phase-badge">${p.badge}</span>
+        </div>
+        <div class="phase-title">${p.title}</div>
+        <div class="phase-subtitle">${p.subtitle}</div>
+      </div>
+    </div>
+    <div class="why-box">
+      <div class="why-label">Why this matters</div>
+      <div class="why-text">${p.why}</div>
+    </div>
+    <div class="analogy-box">
+      <div class="analogy-label">Mental model</div>
+      <div class="analogy-text">${p.analogy}</div>
+    </div>
+    <div class="topics-grid">
+      ${p.topics.map(t => `
+        <div class="topic-item">
+          <div class="topic-name">${t.name}</div>
+          <div class="topic-desc">${t.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="margin-top:1rem;">
+      <div style="font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Study resources</div>
+      <div class="resources-row">${p.resources.map(r => `<span class="resource-tag">${r}</span>`).join('')}</div>
+    </div>
+    <div class="nav-row">
+      ${current > 0 ? `<button class="nav-btn" onclick="goto(${current-1})">← Previous</button>` : ''}
+      ${current < phases.length-1 ? `<button class="nav-btn primary" onclick="goto(${current+1})">Next phase →</button>` : '<button class="nav-btn primary" onclick="sendPrompt(\'Quiz me on all 8 phases\')">Quiz me ↗</button>'}
+    </div>
+  `;
+}
+
+function goto(i) { current = i; render(); }
+render();
+</script>
+
+<a href="../" style="position:fixed;left:14px;bottom:14px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;font:500 13px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;text-decoration:none;color:#fff;background:rgba(22,24,29,.88);box-shadow:0 4px 16px rgba(0,0,0,.28);backdrop-filter:blur(8px)">← Bookmarks</a>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# Personal dashboard — not for indexing.
+User-agent: *
+Disallow: /

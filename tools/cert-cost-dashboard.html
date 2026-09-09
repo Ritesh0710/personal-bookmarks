@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certification Cost Planner — India 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --azure: #0078d4;
+    --aws: #ff9900;
+    --databricks: #e85d04;
+    --fabric: #7c3aed;
+    --python: #3776ab;
+    --sql: #cc2936;
+    --mlops: #059669;
+    --accent: #00d4ff;
+    --gold: #ffd700;
+    --discount: #22c55e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    margin-bottom: 48px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.1s forwards;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.3s forwards;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.35s forwards;
+  }
+
+  .filter-btn {
+    padding: 7px 16px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #000; }
+
+  /* Table */
+  .table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.4s forwards;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    padding: 14px 16px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  th:last-child, td:last-child { text-align: right; }
+  th:nth-child(4), td:nth-child(4) { text-align: center; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    animation: rowIn 0.4s ease backwards;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(0,212,255,0.04); }
+
+  td {
+    padding: 13px 16px;
+    vertical-align: middle;
+  }
+
+  .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    width: 32px;
+  }
+
+  .cat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .cat-azure  { color: var(--azure);  border-color: rgba(0,120,212,0.3);  background: rgba(0,120,212,0.08); }
+  .cat-fabric { color: #a78bfa;       border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.08); }
+  .cat-aws    { color: var(--aws);    border-color: rgba(255,153,0,0.3);  background: rgba(255,153,0,0.08); }
+  .cat-db     { color: #fb923c;       border-color: rgba(232,93,4,0.3);   background: rgba(232,93,4,0.08); }
+  .cat-python { color: #60a5fa;       border-color: rgba(55,118,171,0.3); background: rgba(55,118,171,0.08); }
+  .cat-sql    { color: #f87171;       border-color: rgba(204,41,54,0.3);  background: rgba(204,41,54,0.08); }
+  .cat-mlops  { color: #34d399;       border-color: rgba(5,150,105,0.3);  background: rgba(5,150,105,0.08); }
+
+  .cert-name {
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--text);
+  }
+
+  .exam-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .price-full {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .price-disc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--discount);
+    margin-top: 2px;
+  }
+
+  .disc-tag {
+    display: inline-block;
+    background: rgba(34,197,94,0.15);
+    color: var(--discount);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .trainer-chip {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .trainer-chip strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Section rows */
+  .section-row td {
+    background: var(--surface);
+    padding: 8px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* Total row */
+  .total-row {
+    background: var(--surface) !important;
+  }
+
+  .total-row td {
+    padding: 16px;
+    font-weight: 700;
+    font-size: 15px;
+    border-top: 2px solid var(--border) !important;
+  }
+
+  .total-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .total-amt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    text-align: right;
+  }
+
+  .total-disc-amt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--discount);
+    text-align: right;
+  }
+
+  /* Tips box */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 32px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .tip-icon { font-size: 20px; margin-bottom: 8px; }
+  .tip-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--accent); }
+  .tip-body { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* Hide rows based on filter */
+  tr.hidden { display: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes rowIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  @media (max-width: 700px) {
+    th:nth-child(5), td:nth-child(5) { display: none; }
+    th:nth-child(4), td:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="eyebrow">// GenAI · MLOps · Data Science</div>
+    <h1>Certification <span>Cost Planner</span></h1>
+    <p class="subtitle">All 34 certifications · India pricing (INR) · Full & discounted rates · 2025–26</p>
+  </header>
+
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-card">
+      <div class="stat-label">Total Certs</div>
+      <div class="stat-value" id="statCount">34</div>
+      <div class="stat-sub">across 7 tracks</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Full Cost</div>
+      <div class="stat-value" id="statFull">₹0</div>
+      <div class="stat-sub">without discounts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Discounted Cost</div>
+      <div class="stat-value" id="statDisc">₹0</div>
+      <div class="stat-sub">with best deals</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">You Save</div>
+      <div class="stat-value" id="statSave">₹0</div>
+      <div class="stat-sub">using vouchers & offers</div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filter('all', this)">All</button>
+    <button class="filter-btn" onclick="filter('azure', this)">☁️ Azure</button>
+    <button class="filter-btn" onclick="filter('fabric', this)">🪡 Fabric</button>
+    <button class="filter-btn" onclick="filter('aws', this)">☁️ AWS</button>
+    <button class="filter-btn" onclick="filter('db', this)">🧱 Databricks</button>
+    <button class="filter-btn" onclick="filter('python', this)">🐍 Python</button>
+    <button class="filter-btn" onclick="filter('sql', this)">🗄️ SQL</button>
+    <button class="filter-btn" onclick="filter('mlops', this)">🔧 MLOps</button>
+  </div>
+
+  <div class="table-wrap">
+    <table id="certTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Certification</th>
+          <th>Track</th>
+          <th>Best Trainer</th>
+          <th style="text-align:right">Full Price (₹)</th>
+          <th style="text-align:right">Discounted (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-icon">🎟️</div>
+      <div class="tip-title">Microsoft Virtual Training Days</div>
+      <div class="tip-body">Attend free Azure/AI/Data training events. Get 50% off voucher emailed within 5 days. Works for all -900 level exams.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🏆</div>
+      <div class="tip-title">AWS Half-Price Voucher</div>
+      <div class="tip-body">Pass any AWS exam → receive 50% off next AWS exam automatically. Chain them to keep costs low across the entire AWS track.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📺</div>
+      <div class="tip-title">Free Training Sources</div>
+      <div class="tip-body">John Savill (Azure/YouTube), FreeCodeCamp AWS, Databricks Academy free paths. Zero training cost is achievable.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">⚡</div>
+      <div class="tip-title">Beta Exams</div>
+      <div class="tip-body">Microsoft & AWS offer new exams at 80% discount. Watch Microsoft Learn and AWS Certification announcements.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🧑‍🎓</div>
+      <div class="tip-title">Student Discounts</div>
+      <div class="tip-body">Set role to "Student" on MS Learn profile. Databricks offers student pricing. Oracle Academic Initiative has free/low-cost SQL exams.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">💸</div>
+      <div class="tip-title">Udemy Sale Hack</div>
+      <div class="tip-body">Buy Scott Duffy, ACloudGuru, or Zeal Vora courses only during Udemy sales. Full courses available for ₹499–₹699 every few weeks.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const certs = [
+  // AZURE
+  { id:1,  cat:'azure',  name:'Azure Fundamentals',        code:'AZ-900', full:3696,  disc:1848,  discNote:'50% via VTD',      trainer:'John Savill (Free YT)' },
+  { id:2,  cat:'azure',  name:'Azure AI Fundamentals',     code:'AI-900', full:3696,  disc:1848,  discNote:'50% via VTD',      trainer:'John Savill (Free YT)' },
+  { id:3,  cat:'azure',  name:'Azure Data Fundamentals',   code:'DP-900', full:3696,  disc:1848,  discNote:'50% via VTD',      trainer:'John Savill (Free YT)' },
+  { id:4,  cat:'azure',  name:'Azure Data Scientist',      code:'DP-100', full:4865,  disc:2432,  discNote:'50% CLX / Beta',   trainer:'Scott Duffy (Udemy)' },
+  { id:5,  cat:'azure',  name:'Azure AI Engineer',         code:'AI-102', full:4865,  disc:2432,  discNote:'50% CLX',          trainer:'Scott Duffy (Udemy)' },
+  { id:6,  cat:'azure',  name:'Azure Data Engineer',       code:'DP-203', full:4865,  disc:2432,  discNote:'50% Beta/Ignite',  trainer:'Scott Duffy (Udemy)' },
+  { id:7,  cat:'azure',  name:'Azure DevOps Engineer',     code:'AZ-400', full:4865,  disc:2432,  discNote:'50% Ignite',       trainer:'Scott Duffy (Udemy)' },
+  { id:8,  cat:'azure',  name:'Azure Solutions Architect', code:'AZ-305', full:4865,  disc:2432,  discNote:'50% Beta/Ignite',  trainer:'John Savill + Scott Duffy' },
+  // FABRIC
+  { id:9,  cat:'fabric', name:'Fabric Analytics Engineer', code:'DP-600', full:4865,  disc:2432,  discNote:'50% VTD',          trainer:'John Savill (Free YT)' },
+  { id:10, cat:'fabric', name:'Fabric Data Engineer',      code:'DP-700', full:4865,  disc:2432,  discNote:'50% VTD',          trainer:'John Savill (Free YT)' },
+  // AWS
+  { id:11, cat:'aws',    name:'AWS Cloud Practitioner',    code:'CLF-C02',full:9800,  disc:4900,  discNote:'50% next-exam',    trainer:'FreeCodeCamp (Free YT)' },
+  { id:12, cat:'aws',    name:'AWS AI Practitioner',       code:'AIF-C01',full:9800,  disc:4900,  discNote:'50% next-exam',    trainer:'FreeCodeCamp (Free YT)' },
+  { id:13, cat:'aws',    name:'AWS Data Engineer',         code:'DEA-C01',full:12960, disc:6480,  discNote:'50% next-exam',    trainer:'Stephane Maarek (Udemy)' },
+  { id:14, cat:'aws',    name:'AWS ML Engineer',           code:'MLA-C01',full:12960, disc:6480,  discNote:'50% next-exam',    trainer:'Zeal Vora (Udemy)' },
+  { id:15, cat:'aws',    name:'AWS ML Specialty',          code:'MLS-C01',full:20700, disc:10350, discNote:'50% next-exam',    trainer:'Zeal Vora (Udemy)' },
+  { id:16, cat:'aws',    name:'AWS DevOps Engineer',       code:'DOP-C02',full:20700, disc:10350, discNote:'50% next-exam',    trainer:'Stephane Maarek (Udemy)' },
+  { id:17, cat:'aws',    name:'AWS Solutions Architect',   code:'SAA-C03',full:12960, disc:6480,  discNote:'50% next-exam',    trainer:'Stephane Maarek (Udemy)' },
+  // DATABRICKS
+  { id:18, cat:'db',     name:'DB Data Engineer Associate',code:'DBDE-A', full:19900, disc:14900, discNote:'Student/promo',    trainer:'Databricks Academy (Free)' },
+  { id:19, cat:'db',     name:'DB Data Engineer Pro',      code:'DBDE-P', full:19900, disc:14900, discNote:'Bundle deal',      trainer:'Databricks Academy (Free)' },
+  { id:20, cat:'db',     name:'DB ML Associate',           code:'DBML-A', full:19900, disc:14900, discNote:'Student/promo',    trainer:'Databricks Academy (Free)' },
+  { id:21, cat:'db',     name:'DB ML Professional',        code:'DBML-P', full:19900, disc:14900, discNote:'Bundle deal',      trainer:'Databricks Academy (Free)' },
+  { id:22, cat:'db',     name:'DB GenAI Engineer',         code:'DBGAI-A',full:19900, disc:14900, discNote:'Student/promo',    trainer:'Databricks Academy (Free)' },
+  // PYTHON
+  { id:23, cat:'python', name:'Python Entry Level',        code:'PCEP',   full:5760,  disc:4320,  discNote:'Bundle w/ retake', trainer:'Python Institute / Cisco NetAcad' },
+  { id:24, cat:'python', name:'Python Associate',          code:'PCAP',   full:24700, disc:18500, discNote:'Bundle w/ retake', trainer:'Python Institute + Practice' },
+  { id:25, cat:'python', name:'Python Professional L1',    code:'PCPP1',  full:24700, disc:18500, discNote:'Bundle deal',      trainer:'Python Institute Official' },
+  { id:26, cat:'python', name:'Python Professional L2',    code:'PCPP2',  full:24700, disc:18500, discNote:'Bundle deal',      trainer:'Python Institute Official' },
+  // SQL
+  { id:27, cat:'sql',    name:'Oracle SQL Associate',      code:'1Z0-071',full:12500, disc:9000,  discNote:'Oracle promo',     trainer:'Tim Hall (oracle-base.com)' },
+  { id:28, cat:'sql',    name:'Oracle DB Associate',       code:'1Z0-082',full:12500, disc:9000,  discNote:'Oracle promo',     trainer:'Tim Hall (oracle-base.com)' },
+  { id:29, cat:'sql',    name:'MySQL Developer',           code:'1Z0-909',full:12500, disc:9000,  discNote:'Oracle promo',     trainer:'MySQL Docs + Udemy' },
+  { id:30, cat:'sql',    name:'Microsoft SQL Server',      code:'70-461', full:4865,  disc:2432,  discNote:'50% Ignite',       trainer:'Brent Ozar (Free)' },
+  // MLOPS
+  { id:31, cat:'mlops',  name:'Terraform Associate',       code:'003',    full:13500, disc:10000, discNote:'HashiCorp promo',  trainer:'FreeCodeCamp (Free YT)' },
+  { id:32, cat:'mlops',  name:'Google Pro ML Engineer',    code:'GPML',   full:11000, disc:8000,  discNote:'Google promo',     trainer:'Google Cloud Skills Boost' },
+  { id:33, cat:'mlops',  name:'Kubernetes Admin (CKA)',    code:'CKA',    full:24700, disc:18500, discNote:'Linux Found. sale', trainer:'Mumshad Mannambeth (Udemy)' },
+  { id:34, cat:'mlops',  name:'Kubernetes App Dev (CKAD)', code:'CKAD',   full:24700, disc:18500, discNote:'Linux Found. sale', trainer:'Mumshad Mannambeth (Udemy)' },
+];
+
+const sections = {
+  azure: { label: '☁️ AZURE', color: 'cat-azure' },
+  fabric: { label: '🪡 MICROSOFT FABRIC', color: 'cat-fabric' },
+  aws:  { label: '☁️ AWS', color: 'cat-aws' },
+  db:   { label: '🧱 DATABRICKS', color: 'cat-db' },
+  python:{ label:'🐍 PYTHON', color:'cat-python' },
+  sql:  { label: '🗄️ SQL', color: 'cat-sql' },
+  mlops:{ label: '🔧 MLOPS / INFRA', color: 'cat-mlops' },
+};
+
+function renderTable(visibleCats) {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+
+  let fullTotal = 0, discTotal = 0, count = 0;
+  let lastCat = null;
+  let delay = 0;
+
+  certs.forEach(c => {
+    if (visibleCats !== 'all' && c.cat !== visibleCats) return;
+
+    // Section header
+    if (c.cat !== lastCat) {
+      const sec = document.createElement('tr');
+      sec.className = 'section-row';
+      sec.innerHTML = `<td colspan="6">${sections[c.cat].label}</td>`;
+      tbody.appendChild(sec);
+      lastCat = c.cat;
+    }
+
+    fullTotal += c.full;
+    discTotal += c.disc;
+    count++;
+
+    const tr = document.createElement('tr');
+    tr.dataset.cat = c.cat;
+    tr.style.animationDelay = `${delay * 25}ms`;
+    tr.innerHTML = `
+      <td class="num">${c.id}</td>
+      <td>
+        <div class="cert-name">${c.name}</div>
+        <div class="exam-code">${c.code}</div>
+      </td>
+      <td><span class="cat-badge ${sections[c.cat].color}">${c.cat === 'db' ? 'Databricks' : c.cat.toUpperCase()}</span></td>
+      <td><span class="trainer-chip">${c.trainer}</span></td>
+      <td class="price-full" style="text-align:right">₹${c.full.toLocaleString('en-IN')}</td>
+      <td style="text-align:right">
+        <div class="price-full">₹${c.disc.toLocaleString('en-IN')}</div>
+        <div class="price-disc"><span class="disc-tag">${c.discNote}</span></div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+    delay++;
+  });
+
+  // Totals row
+  const tr = document.createElement('tr');
+  tr.className = 'total-row';
+  tr.innerHTML = `
+    <td colspan="4"><span class="total-label">TOTAL (${count} certifications)</span></td>
+    <td class="total-amt">₹${fullTotal.toLocaleString('en-IN')}</td>
+    <td class="total-disc-amt">₹${discTotal.toLocaleString('en-IN')}</td>
+  `;
+  tbody.appendChild(tr);
+
+  // Update stats
+  document.getElementById('statCount').textContent = count;
+  document.getElementById('statFull').textContent = '₹' + (fullTotal/100000).toFixed(1) + 'L';
+  document.getElementById('statDisc').textContent = '₹' + (discTotal/100000).toFixed(1) + 'L';
+  document.getElementById('statSave').textContent = '₹' + ((fullTotal - discTotal)/100000).toFixed(1) + 'L';
+}
+
+function filter(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable(cat);
+}
+
+renderTable('all');
+</script>
+<a href="../" style="position:fixed;left:14px;bottom:14px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;font:500 13px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;text-decoration:none;color:#fff;background:rgba(22,24,29,.88);box-shadow:0 4px 16px rgba(0,0,0,.28);backdrop-filter:blur(8px)">← Bookmarks</a>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ritesh · 150 Target Companies · 45 LPA+</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0b0b0e;--bg2:#111115;--bg3:#17171d;--bg4:#1f1f27;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);
+  --text:#ededea;--muted:#7a7a78;--faint:#3a3a38;
+  --gcc-bfsi:#f0a048;--gcc-tech:#48c8f0;--gcc-auto:#a0f048;
+  --product:#f048a0;--startup:#a048f0;--remote:#48f0a0;--bigtech:#f09848;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0}
+.orb1{width:500px;height:500px;background:rgba(240,160,72,0.04);top:-150px;right:-100px}
+.orb2{width:400px;height:400px;background:rgba(72,200,240,0.04);bottom:5%;left:-80px}
+.shell{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding:0 20px}
+
+/* HEADER */
+header{padding:44px 0 28px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.h-row{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gcc-bfsi);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.eyebrow::before{content:'';width:18px;height:1px;background:var(--gcc-bfsi);display:inline-block}
+h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4.5vw,48px);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+h1 em{font-style:italic;font-family:'Instrument Serif',serif;color:var(--gcc-bfsi);font-size:1.08em}
+.h-stats{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.stat-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border2);border-radius:20px;font-size:11px;color:var(--muted);background:var(--bg2)}
+.pill strong{color:var(--text);font-weight:500}
+
+/* CONTROLS */
+.ctrl{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.srch{position:relative;flex:1;min-width:220px}
+.srch svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);width:15px;height:15px}
+#q{width:100%;padding:11px 12px 11px 38px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;transition:border-color .2s}
+#q:focus{border-color:var(--border2)}
+#q::placeholder{color:var(--faint)}
+.loc-sel{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;flex-shrink:0}
+.loc-btn{padding:9px 14px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;font-size:12px;transition:all .15s;white-space:nowrap}
+.loc-btn.active{background:var(--bg3);color:var(--text)}
+
+/* CAT BAR */
+.cat-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.cat-btn{padding:5px 13px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.04em;cursor:pointer;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.cat-btn:hover{border-color:var(--border2);color:var(--text)}
+.cat-btn.active{color:#0b0b0e;border-color:transparent;font-weight:500}
+.cat-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:var(--bg2);margin-bottom:40px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead{background:var(--bg3)}
+thead th{padding:12px 14px;text-align:left;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:400;white-space:nowrap;border-bottom:1px solid var(--border)}
+tbody tr{border-bottom:1px solid var(--border);cursor:default;transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--bg3)}
+td{padding:11px 14px;vertical-align:middle}
+.td-num{color:var(--faint);font-size:11px;width:36px;text-align:center}
+.td-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap}
+.td-cat{white-space:nowrap}
+.cat-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:6px;font-size:10px;letter-spacing:.03em;font-weight:500;white-space:nowrap}
+.td-loc .loc-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:10px;border:1px solid var(--border);color:var(--muted);white-space:nowrap}
+.loc-pune{border-color:rgba(200,240,100,.2)!important;color:#c8f064!important}
+.loc-remote{border-color:rgba(72,200,240,.2)!important;color:#48c8f0!important}
+.loc-both{border-color:rgba(240,100,160,.2)!important;color:#f064a0!important}
+.td-sal{color:var(--text);font-size:12px;white-space:nowrap}
+.sal-hi{color:#a0f048;font-weight:500}
+.td-why{color:var(--muted);font-size:11px;max-width:260px;line-height:1.5}
+.td-act a{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:10px;text-decoration:none;transition:all .15s;white-space:nowrap}
+.td-act a:hover{border-color:var(--border2);color:var(--text)}
+
+/* INFO STRIP */
+.info-strip{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;justify-content:space-between}
+.res-count{font-size:11px;color:var(--faint)}
+.sort-row{display:flex;gap:6px}
+.sort-btn{padding:4px 10px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s}
+.sort-btn.active{background:var(--bg3);color:var(--text)}
+.sort-btn:hover{color:var(--text)}
+
+/* LEGEND */
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* SCROLL TOP */
+#top{position:fixed;bottom:24px;right:24px;width:38px;height:38px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;transform:translateY(6px);transition:all .2s}
+#top.show{opacity:1;transform:translateY(0)}
+#top:hover{background:var(--bg4)}
+
+/* FOOTER */
+footer{margin-top:60px;padding:24px 0 36px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer span{font-size:10px;color:var(--faint)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.tbl-wrap{animation:fadeIn .3s ease}
+
+@media(max-width:640px){
+  .h-stats{align-items:flex-start}
+  .stat-row{justify-content:flex-start}
+  table{font-size:11px}
+  .td-why{display:none}
+}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<button id="top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<div class="shell">
+<header>
+  <div class="h-row">
+    <div>
+      <div class="eyebrow">Ritesh Zambre · Target Companies 2026</div>
+      <h1>150 Companies.<br><em>₹45 LPA+</em> Target.</h1>
+    </div>
+    <div class="h-stats">
+      <div class="stat-row">
+        <span class="pill"><strong>150</strong> Companies</span>
+        <span class="pill"><strong>7</strong> Categories</span>
+        <span class="pill"><strong>Pune + Remote</strong></span>
+      </div>
+      <div class="stat-row">
+        <span class="pill"><strong>40–120 LPA</strong> Range</span>
+        <span class="pill"><strong>GCC · Product · Startup · Remote</strong></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- LEGEND -->
+<div class="legend" id="legend"></div>
+
+<!-- CONTROLS -->
+<div class="ctrl">
+  <div class="srch">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="q" placeholder="Search company, category, or keyword..." oninput="render()">
+  </div>
+  <div class="loc-sel">
+    <button class="loc-btn active" id="la" onclick="setLoc('all')">All</button>
+    <button class="loc-btn" id="lp" onclick="setLoc('pune')">Pune</button>
+    <button class="loc-btn" id="lr" onclick="setLoc('remote')">Remote</button>
+  </div>
+</div>
+
+<!-- CAT BAR -->
+<div class="cat-bar" id="catBar"></div>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <span class="res-count" id="rcount"></span>
+  <div class="sort-row">
+    <button class="sort-btn active" id="s-default" onclick="setSort('default')">Default</button>
+    <button class="sort-btn" id="s-sal" onclick="setSort('sal')">Salary ↓</button>
+    <button class="sort-btn" id="s-name" onclick="setSort('name')">A–Z</button>
+  </div>
+</div>
+
+<!-- TABLE -->
+<div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Company</th>
+        <th>Category</th>
+        <th>Location</th>
+        <th>Salary Range</th>
+        <th>Why Relevant</th>
+        <th>Apply</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<footer>
+  <span>Ritesh Zambre · 150 Target Companies · Data Engineering / MLOps / GenAI</span>
+  <span>Salaries are estimated CTC ranges for Senior roles (5+ yrs exp) · Updated Jun 2026</span>
+</footer>
+</div>
+
+<script>
+const CATS = {
+  "GCC – BFSI":    { color:"#f0a048", bg:"rgba(240,160,72,.12)"  },
+  "GCC – Tech":    { color:"#48c8f0", bg:"rgba(72,200,240,.12)"  },
+  "GCC – Auto":    { color:"#a0f048", bg:"rgba(160,240,72,.12)"  },
+  "Product – Pune":{ color:"#f048a0", bg:"rgba(240,72,160,.12)"  },
+  "Indian Startup":{ color:"#a048f0", bg:"rgba(160,72,240,.12)"  },
+  "Remote – Data/AI":{ color:"#48f0a0", bg:"rgba(72,240,160,.12)"},
+  "Big Tech":      { color:"#f09848", bg:"rgba(240,152,72,.12)"  },
+};
+
+// loc: "pune" | "remote" | "both"
+const DATA = [
+  // ── GCC – BFSI ──────────────────────────────────────
+  {n:"Deutsche Bank",   cat:"GCC – BFSI",   loc:"pune",  sal:[40,55], salMax:55, why:"Data platforms, risk analytics, Azure Databricks, heavy DE focus"},
+  {n:"Barclays",        cat:"GCC – BFSI",   loc:"pune",  sal:[38,50], salMax:50, why:"Global analytics, PySpark pipelines, ML for fraud detection"},
+  {n:"BNY Mellon",      cat:"GCC – BFSI",   loc:"pune",  sal:[35,50], salMax:50, why:"Data engineering, ADF pipelines, Azure cloud-first org"},
+  {n:"HSBC",            cat:"GCC – BFSI",   loc:"pune",  sal:[35,50], salMax:50, why:"Data lake architecture, ML models, credit risk analytics"},
+  {n:"Citi",            cat:"GCC – BFSI",   loc:"pune",  sal:[35,48], salMax:48, why:"Data engineering, Databricks, regulatory reporting pipelines"},
+  {n:"Standard Chartered",cat:"GCC – BFSI", loc:"pune",  sal:[32,46], salMax:46, why:"Credit analytics, ML models, Azure data platform"},
+  {n:"Bank of America", cat:"GCC – BFSI",   loc:"pune",  sal:[35,50], salMax:50, why:"ML engineering, risk analytics, cloud data infrastructure"},
+  {n:"Morgan Stanley",  cat:"GCC – BFSI",   loc:"pune",  sal:[38,55], salMax:55, why:"Quantitative analytics, data pipelines, ML at scale"},
+  {n:"Goldman Sachs",   cat:"GCC – BFSI",   loc:"pune",  sal:[42,62], salMax:62, why:"Data engineering, MLOps, Python-heavy quant analytics"},
+  {n:"JP Morgan",       cat:"GCC – BFSI",   loc:"pune",  sal:[40,58], salMax:58, why:"Data mesh, Azure/Databricks, ML pipelines for financial data"},
+  {n:"UBS",             cat:"GCC – BFSI",   loc:"pune",  sal:[38,52], salMax:52, why:"Risk data engineering, cloud migration, ML monitoring"},
+  {n:"MSCI",            cat:"GCC – BFSI",   loc:"pune",  sal:[35,50], salMax:50, why:"Financial data pipelines, quant analytics, Azure stack"},
+  {n:"Fidelity",        cat:"GCC – BFSI",   loc:"pune",  sal:[35,48], salMax:48, why:"Investment analytics, data platform engineering, Databricks"},
+  {n:"BlackRock",       cat:"GCC – BFSI",   loc:"pune",  sal:[40,58], salMax:58, why:"Aladdin data platform, ML, Databricks, heavy Python/PySpark"},
+  {n:"Mastercard",      cat:"GCC – BFSI",   loc:"pune",  sal:[38,52], salMax:52, why:"Transaction analytics, fraud ML, real-time data pipelines"},
+  {n:"Visa",            cat:"GCC – BFSI",   loc:"pune",  sal:[36,50], salMax:50, why:"Payments data, real-time analytics, ML for fraud"},
+  {n:"American Express",cat:"GCC – BFSI",   loc:"pune",  sal:[35,50], salMax:50, why:"Customer analytics, ML models, Azure data platform"},
+  {n:"PayPal",          cat:"GCC – BFSI",   loc:"pune",  sal:[35,50], salMax:50, why:"Risk & fraud ML, data engineering, Spark pipelines"},
+  {n:"Fiserv",          cat:"GCC – BFSI",   loc:"pune",  sal:[32,45], salMax:45, why:"Payments data engineering, Azure, BI & forecasting"},
+  {n:"S&P Global (CRISIL)",cat:"GCC – BFSI",loc:"pune",  sal:[35,50], salMax:50, why:"Financial analytics, data engineering, ML for credit ratings"},
+  {n:"Moody's Analytics",cat:"GCC – BFSI",  loc:"pune",  sal:[35,48], salMax:48, why:"ECL/credit risk ML (matches your microfinance work), Azure"},
+  {n:"Bloomberg",       cat:"GCC – BFSI",   loc:"pune",  sal:[38,55], salMax:55, why:"Financial data pipelines, real-time streaming, ML"},
+  {n:"Broadridge",      cat:"GCC – BFSI",   loc:"pune",  sal:[32,45], salMax:45, why:"Capital markets data engineering, Azure migration"},
+  {n:"FIS",             cat:"GCC – BFSI",   loc:"pune",  sal:[30,43], salMax:43, why:"Data platforms for banking, ETL pipelines, Azure"},
+  {n:"D.E. Shaw",       cat:"GCC – BFSI",   loc:"pune",  sal:[45,72], salMax:72, why:"Quant tech, ML systems, data engineering at scale"},
+  {n:"Syntel (Atos)",   cat:"GCC – BFSI",   loc:"pune",  sal:[28,40], salMax:40, why:"Data engineering services, Azure, analytics"},
+  {n:"Western Union",   cat:"GCC – BFSI",   loc:"pune",  sal:[30,42], salMax:42, why:"Transaction data engineering, ML for compliance"},
+  {n:"Mphasis",         cat:"GCC – BFSI",   loc:"pune",  sal:[28,40], salMax:40, why:"Azure data services, ML, Databricks consulting"},
+  {n:"SS&C Technologies",cat:"GCC – BFSI",  loc:"pune",  sal:[30,43], salMax:43, why:"Fund analytics, data pipelines, Azure stack"},
+  {n:"Acuity Knowledge",cat:"GCC – BFSI",   loc:"pune",  sal:[28,40], salMax:40, why:"Investment analytics, data engineering, BI"},
+  // ── GCC – Tech ──────────────────────────────────────
+  {n:"Microsoft India", cat:"GCC – Tech",   loc:"both",  sal:[50,100],salMax:100,why:"Azure + Fabric native – strongest alignment possible"},
+  {n:"IBM India",       cat:"GCC – Tech",   loc:"pune",  sal:[35,52], salMax:52, why:"Data & AI consulting, watsonx, Azure partnerships"},
+  {n:"Oracle India",    cat:"GCC – Tech",   loc:"pune",  sal:[38,55], salMax:55, why:"Cloud data engineering, OCI, ML platform work"},
+  {n:"SAP Labs India",  cat:"GCC – Tech",   loc:"pune",  sal:[38,55], salMax:55, why:"Data & Analytics Cloud, AI/ML integration, Azure"},
+  {n:"Cisco Systems",   cat:"GCC – Tech",   loc:"pune",  sal:[40,60], salMax:60, why:"Network analytics, telemetry ML, data platform engineering"},
+  {n:"VMware/Broadcom", cat:"GCC – Tech",   loc:"pune",  sal:[38,55], salMax:55, why:"Cloud infrastructure analytics, data pipeline work"},
+  {n:"Qualcomm India",  cat:"GCC – Tech",   loc:"pune",  sal:[42,62], salMax:62, why:"ML for chipsets, data engineering, Python/PySpark"},
+  {n:"Synopsys",        cat:"GCC – Tech",   loc:"pune",  sal:[35,50], salMax:50, why:"EDA data analytics, ML for chip design, data pipelines"},
+  {n:"NetApp India",    cat:"GCC – Tech",   loc:"pune",  sal:[38,58], salMax:58, why:"Cloud data management, Kubernetes, MLOps"},
+  {n:"Nutanix India",   cat:"GCC – Tech",   loc:"pune",  sal:[38,58], salMax:58, why:"HCI analytics, cloud ML pipelines, DataOps"},
+  {n:"Pure Storage",    cat:"GCC – Tech",   loc:"pune",  sal:[36,52], salMax:52, why:"Storage analytics, ML, data platform engineering"},
+  {n:"Rubrik India",    cat:"GCC – Tech",   loc:"pune",  sal:[40,60], salMax:60, why:"Data security + management, ML for threat detection"},
+  {n:"Cohesity India",  cat:"GCC – Tech",   loc:"pune",  sal:[38,55], salMax:55, why:"Data management, ML for backup analytics, GenAI features"},
+  {n:"Pega Systems",    cat:"GCC – Tech",   loc:"pune",  sal:[35,50], salMax:50, why:"Low-code AI, ML decisioning, Azure integrations"},
+  {n:"OpenText",        cat:"GCC – Tech",   loc:"pune",  sal:[30,43], salMax:43, why:"Content analytics, ML, data engineering"},
+  {n:"Bentley Systems", cat:"GCC – Tech",   loc:"pune",  sal:[32,46], salMax:46, why:"Infrastructure data analytics, ML, Azure"},
+  {n:"Veritas Technologies",cat:"GCC – Tech",loc:"pune", sal:[32,46], salMax:46, why:"Data management analytics, cloud ML"},
+  {n:"Vodafone Intelligence",cat:"GCC – Tech",loc:"pune",sal:[35,50], salMax:50, why:"Telecom analytics, ML, Azure Databricks"},
+  {n:"Amdocs",          cat:"GCC – Tech",   loc:"pune",  sal:[32,45], salMax:45, why:"Telecom data engineering, ML, Azure"},
+  {n:"ZS Associates",   cat:"GCC – Tech",   loc:"pune",  sal:[35,52], salMax:52, why:"Pharma/FMCG analytics – your Theobroma exp is relevant"},
+  {n:"Epsilon",         cat:"GCC – Tech",   loc:"pune",  sal:[30,43], salMax:43, why:"Marketing data engineering, ML, Azure analytics"},
+  {n:"GlobalLogic",     cat:"GCC – Tech",   loc:"pune",  sal:[35,52], salMax:52, why:"Product engineering, data & AI platform work"},
+  {n:"Unisys",          cat:"GCC – Tech",   loc:"pune",  sal:[28,40], salMax:40, why:"Cloud & data services, Azure, ML engineering"},
+  {n:"NICE-Actimize",   cat:"GCC – Tech",   loc:"pune",  sal:[35,50], salMax:50, why:"Financial crime analytics, ML, Azure Databricks"},
+  {n:"EXL Analytics",   cat:"GCC – Tech",   loc:"pune",  sal:[28,40], salMax:40, why:"FMCG/healthcare analytics, data engineering, ML"},
+  // ── GCC – Auto & Engineering ────────────────────────
+  {n:"Mercedes-Benz Tech India",cat:"GCC – Auto",loc:"pune",sal:[38,55],salMax:55,why:"Automotive data platform, ML for connected cars, Databricks"},
+  {n:"BMW India Tech",  cat:"GCC – Auto",   loc:"pune",  sal:[38,52], salMax:52, why:"ER&D data analytics, ML for ADAS, PySpark"},
+  {n:"John Deere Tech", cat:"GCC – Auto",   loc:"pune",  sal:[35,50], salMax:50, why:"AgriTech ML, IoT data pipelines, Azure"},
+  {n:"Volkswagen Group Tech",cat:"GCC – Auto",loc:"pune", sal:[35,50], salMax:50, why:"Automotive data engineering, ML, Azure"},
+  {n:"Continental",     cat:"GCC – Auto",   loc:"pune",  sal:[32,46], salMax:46, why:"Automotive analytics, data engineering, ADAS ML"},
+  {n:"Bosch Global Software",cat:"GCC – Auto",loc:"pune",sal:[35,52], salMax:52, why:"IoT data pipelines, ML, industrial analytics"},
+  {n:"Eaton",           cat:"GCC – Auto",   loc:"pune",  sal:[35,50], salMax:50, why:"Power management data, ML, Azure platform"},
+  {n:"Emerson",         cat:"GCC – Auto",   loc:"pune",  sal:[32,46], salMax:46, why:"Industrial IoT analytics, data engineering, ML"},
+  {n:"Honeywell Tech",  cat:"GCC – Auto",   loc:"pune",  sal:[35,50], salMax:50, why:"Industrial IoT data, Databricks, ML forecasting"},
+  {n:"Siemens Technology",cat:"GCC – Auto", loc:"pune",  sal:[35,50], salMax:50, why:"Industrial data pipelines, ML, Azure cloud"},
+  {n:"Aptiv",           cat:"GCC – Auto",   loc:"pune",  sal:[32,46], salMax:46, why:"Automotive software data, ML, connected vehicles"},
+  {n:"KPIT Technologies",cat:"GCC – Auto",  loc:"pune",  sal:[32,46], salMax:46, why:"Automotive AI, data engineering, Azure – matches your stack"},
+  {n:"Vertiv",          cat:"GCC – Auto",   loc:"pune",  sal:[30,43], salMax:43, why:"Data center analytics, ML, power monitoring"},
+  {n:"Cummins Tech",    cat:"GCC – Auto",   loc:"pune",  sal:[35,50], salMax:50, why:"Engine data analytics, IoT ML, Azure platform"},
+  {n:"Tata Technologies",cat:"GCC – Auto",  loc:"pune",  sal:[28,42], salMax:42, why:"ER&D data engineering, ML, Databricks"},
+  // ── Product – Pune ──────────────────────────────────
+  {n:"Druva",           cat:"Product – Pune",loc:"both", sal:[40,62], salMax:62, why:"Cloud data protection, ML for backup analytics, SaaS"},
+  {n:"Icertis",         cat:"Product – Pune",loc:"pune", sal:[38,56], salMax:56, why:"Azure-native CLM, ML/GenAI for contract intelligence"},
+  {n:"BrowserStack",    cat:"Product – Pune",loc:"both", sal:[38,55], salMax:55, why:"Data platform engineering, ML, Databricks, Azure"},
+  {n:"PubMatic",        cat:"Product – Pune",loc:"pune", sal:[35,52], salMax:52, why:"Ad tech data engineering, real-time ML pipelines, Kafka"},
+  {n:"Finastra",        cat:"Product – Pune",loc:"pune", sal:[35,50], salMax:50, why:"Fintech data engineering, ML for banking, Azure"},
+  {n:"Persistent Systems",cat:"Product – Pune",loc:"pune",sal:[30,45], salMax:45, why:"Product engineering, AI/ML, Azure data platform"},
+  {n:"Synechron",       cat:"Product – Pune",loc:"pune", sal:[30,44], salMax:44, why:"BFSI analytics, data engineering, ML on Azure"},
+  {n:"Forcepoint",      cat:"Product – Pune",loc:"pune", sal:[32,46], salMax:46, why:"Security analytics, ML for DLP, data pipelines"},
+  {n:"CitiusTech",      cat:"Product – Pune",loc:"pune", sal:[30,43], salMax:43, why:"Healthcare data engineering, ML – WHO exp relevant"},
+  {n:"Mastek",          cat:"Product – Pune",loc:"pune", sal:[28,40], salMax:40, why:"Azure data engineering, ML, government data projects"},
+  {n:"SG Analytics",    cat:"Product – Pune",loc:"pune", sal:[28,40], salMax:40, why:"Analytics consulting, data engineering, ML"},
+  {n:"WNS Analytics",   cat:"Product – Pune",loc:"pune", sal:[28,38], salMax:38, why:"Healthcare/FMCG analytics, data engineering, ML"},
+  {n:"Zensar Technologies",cat:"Product – Pune",loc:"pune",sal:[28,40],salMax:40, why:"Azure data services, analytics, ML engineering"},
+  {n:"Quick Heal/Seqrite",cat:"Product – Pune",loc:"pune",sal:[26,38], salMax:38, why:"Security ML, data analytics, threat intelligence"},
+  {n:"Cybage Software", cat:"Product – Pune",loc:"pune", sal:[26,36], salMax:36, why:"Product engineering, data & AI services"},
+  // ── Indian Startups ─────────────────────────────────
+  {n:"PhonePe",         cat:"Indian Startup",loc:"remote",sal:[40,62],salMax:62, why:"Fintech data platform, ML for payments, PySpark, Databricks"},
+  {n:"Razorpay",        cat:"Indian Startup",loc:"remote",sal:[38,58],salMax:58, why:"Payments data engineering, ML for risk, Kafka, PySpark"},
+  {n:"CRED",            cat:"Indian Startup",loc:"remote",sal:[42,65],salMax:65, why:"Consumer ML, data platform, GenAI features, Azure"},
+  {n:"Zepto",           cat:"Indian Startup",loc:"remote",sal:[38,58],salMax:58, why:"Supply chain ML, demand forecasting – perfect match"},
+  {n:"Groww",           cat:"Indian Startup",loc:"remote",sal:[38,58],salMax:58, why:"Fintech data engineering, ML for investment products"},
+  {n:"Zerodha",         cat:"Indian Startup",loc:"remote",sal:[35,52],salMax:52, why:"Financial data engineering, ML, Python-heavy stack"},
+  {n:"Postman",         cat:"Indian Startup",loc:"both",  sal:[42,65],salMax:65, why:"Dev tools analytics, data platform engineering, ML"},
+  {n:"Whatfix",         cat:"Indian Startup",loc:"remote",sal:[35,52],salMax:52, why:"SaaS data platform, ML for user analytics, GenAI"},
+  {n:"MoEngage",        cat:"Indian Startup",loc:"remote",sal:[35,52],salMax:52, why:"MarTech data engineering, ML for customer analytics"},
+  {n:"CleverTap",       cat:"Indian Startup",loc:"remote",sal:[35,50],salMax:50, why:"Customer analytics, ML, real-time data pipelines"},
+  {n:"Sprinklr",        cat:"Indian Startup",loc:"remote",sal:[35,52],salMax:52, why:"Social data engineering, ML/NLP, Azure integrations"},
+  {n:"Sigmoid Analytics",cat:"Indian Startup",loc:"remote",sal:[35,52],salMax:52, why:"Data engineering + ML consulting – perfect stack match"},
+  {n:"Atlan",           cat:"Indian Startup",loc:"remote",sal:[42,65],salMax:65, why:"Data catalog + governance, ML/GenAI features, Azure"},
+  {n:"Hasura",          cat:"Indian Startup",loc:"remote",sal:[38,58],salMax:58, why:"Data API layer, engineering-heavy, ML integration"},
+  {n:"Porter",          cat:"Indian Startup",loc:"remote",sal:[32,48],salMax:48, why:"Logistics ML, demand forecasting, data engineering"},
+  {n:"Jupiter Money",   cat:"Indian Startup",loc:"remote",sal:[35,52],salMax:52, why:"Fintech data platform, ML for credit, Databricks"},
+  {n:"Meesho",          cat:"Indian Startup",loc:"remote",sal:[38,58],salMax:58, why:"E-commerce ML, demand forecasting – matches your FMCG work"},
+  {n:"ShareChat",       cat:"Indian Startup",loc:"remote",sal:[35,52],salMax:52, why:"Social platform ML, NLP, data engineering at scale"},
+  {n:"Nykaa",           cat:"Indian Startup",loc:"remote",sal:[30,45],salMax:45, why:"Retail analytics, demand forecasting, ML – your domain"},
+  {n:"upGrad",          cat:"Indian Startup",loc:"remote",sal:[30,44],salMax:44, why:"EdTech data platform, ML for personalisation, Azure"},
+  {n:"Slice / NE Bank", cat:"Indian Startup",loc:"remote",sal:[32,48],salMax:48, why:"Credit ML, ECL prediction – matches microfinance work"},
+  {n:"Unacademy",       cat:"Indian Startup",loc:"remote",sal:[28,42],salMax:42, why:"EdTech data engineering, ML, analytics platform"},
+  {n:"Delhivery",       cat:"Indian Startup",loc:"remote",sal:[32,48],salMax:48, why:"Logistics ML, demand forecasting, data platform"},
+  {n:"Lenskart",        cat:"Indian Startup",loc:"remote",sal:[30,44],salMax:44, why:"Retail data platform, demand forecasting, ML"},
+  {n:"OLA",             cat:"Indian Startup",loc:"remote",sal:[32,48],salMax:48, why:"Mobility ML, demand forecasting, PySpark, data platform"},
+  // ── Remote – Data/AI Platforms ──────────────────────
+  {n:"Databricks",      cat:"Remote – Data/AI",loc:"remote",sal:[60,100],salMax:100,why:"Creator of Delta Lake, Spark, MLflow – your entire stack"},
+  {n:"Confluent",       cat:"Remote – Data/AI",loc:"remote",sal:[48,78], salMax:78, why:"Kafka – real-time streaming specialist hiring globally"},
+  {n:"dbt Labs",        cat:"Remote – Data/AI",loc:"remote",sal:[42,68], salMax:68, why:"Data transformation platform, Analytics Engineering roles"},
+  {n:"Monte Carlo",     cat:"Remote – Data/AI",loc:"remote",sal:[42,65], salMax:65, why:"Data observability, quality – your governance experience"},
+  {n:"Airbyte",         cat:"Remote – Data/AI",loc:"remote",sal:[42,68], salMax:68, why:"Open-source data integration, DE engineering roles"},
+  {n:"Fivetran",        cat:"Remote – Data/AI",loc:"remote",sal:[42,68], salMax:68, why:"Data integration, pipelines – your ADF experience maps here"},
+  {n:"Astronomer",      cat:"Remote – Data/AI",loc:"remote",sal:[40,62], salMax:62, why:"Managed Airflow, DataOps – your Airflow/CI/CD skills"},
+  {n:"Starburst",       cat:"Remote – Data/AI",loc:"remote",sal:[42,65], salMax:65, why:"Trino/federated query, lakehouse – medallion arch experience"},
+  {n:"Hightouch",       cat:"Remote – Data/AI",loc:"remote",sal:[40,62], salMax:62, why:"Reverse ETL, data activation, AI features"},
+  {n:"Weights & Biases",cat:"Remote – Data/AI",loc:"remote",sal:[42,68], salMax:68, why:"MLOps observability, LLM monitoring – your MLflow skills"},
+  {n:"LangChain",       cat:"Remote – Data/AI",loc:"remote",sal:[45,75], salMax:75, why:"You use LangChain/LangGraph in production – strong alignment"},
+  {n:"Coalesce",        cat:"Remote – Data/AI",loc:"remote",sal:[38,60], salMax:60, why:"Data transformation, Snowflake/Databricks pipelines"},
+  {n:"DataStax",        cat:"Remote – Data/AI",loc:"remote",sal:[42,65], salMax:65, why:"Vector DB (Astra), GenAI data platform – RAG experience"},
+  {n:"Qdrant",          cat:"Remote – Data/AI",loc:"remote",sal:[42,68], salMax:68, why:"Vector database, AI search – your RAG/vector DB skills"},
+  {n:"Scale AI",        cat:"Remote – Data/AI",loc:"remote",sal:[48,80], salMax:80, why:"AI data platform, ML ops, GenAI tooling – strong match"},
+  {n:"Cohere",          cat:"Remote – Data/AI",loc:"remote",sal:[48,80], salMax:80, why:"LLM platform, RAG infrastructure – your GenAI background"},
+  {n:"Hugging Face",    cat:"Remote – Data/AI",loc:"remote",sal:[45,75], salMax:75, why:"ML model hub, fine-tuning (LoRA/QLoRA), transformers"},
+  {n:"Prefect",         cat:"Remote – Data/AI",loc:"remote",sal:[38,60], salMax:60, why:"Workflow orchestration – parallel to Airflow skills"},
+  {n:"Streamsets/IBM",  cat:"Remote – Data/AI",loc:"remote",sal:[40,62], salMax:62, why:"Data pipeline engineering, streaming, Azure integration"},
+  {n:"Modal Labs",      cat:"Remote – Data/AI",loc:"remote",sal:[40,65], salMax:65, why:"Cloud AI compute, ML infra, GenAI deployment"},
+  // ── Big Tech ────────────────────────────────────────
+  {n:"Google India",    cat:"Big Tech",     loc:"remote",sal:[60,120],salMax:120,why:"Data engineering, ML infra, Vertex AI, BigQuery at scale"},
+  {n:"Amazon / AWS India",cat:"Big Tech",   loc:"remote",sal:[55,100],salMax:100,why:"AWS data platform, SageMaker, ML engineering"},
+  {n:"Meta India",      cat:"Big Tech",     loc:"remote",sal:[55,100],salMax:100,why:"Data engineering at massive scale, ML infra, PyTorch"},
+  {n:"Salesforce India",cat:"Big Tech",     loc:"remote",sal:[45,80], salMax:80, why:"Einstein AI, CRM data platform, ML/GenAI features"},
+  {n:"Adobe India",     cat:"Big Tech",     loc:"remote",sal:[45,80], salMax:80, why:"Experience Cloud data platform, ML, GenAI content"},
+  {n:"ServiceNow India",cat:"Big Tech",     loc:"remote",sal:[45,78], salMax:78, why:"Now Intelligence, ML platform, data engineering"},
+  {n:"Workday India",   cat:"Big Tech",     loc:"remote",sal:[45,75], salMax:75, why:"HCM/Finance analytics, ML, data engineering"},
+  {n:"Splunk India",    cat:"Big Tech",     loc:"remote",sal:[45,75], salMax:75, why:"Data observability, ML for security, SPL/pipelines"},
+  {n:"Intuit India",    cat:"Big Tech",     loc:"remote",sal:[45,75], salMax:75, why:"Fintech data platform, ML for tax/accounting, GenAI"},
+  {n:"Snowflake India", cat:"Big Tech",     loc:"remote",sal:[48,85], salMax:85, why:"Cloud data warehouse, Cortex AI, data engineering"},
+  {n:"Palantir",        cat:"Big Tech",     loc:"remote",sal:[50,90], salMax:90, why:"AIP platform, ontology data engineering, ML at scale"},
+  {n:"Datadog India",   cat:"Big Tech",     loc:"remote",sal:[45,78], salMax:78, why:"Observability ML, data pipelines, monitoring at scale"},
+  {n:"Elastic India",   cat:"Big Tech",     loc:"remote",sal:[42,70], salMax:70, why:"Search + ML, vector search, GenAI features"},
+  {n:"HashiCorp / IBM", cat:"Big Tech",     loc:"remote",sal:[40,68], salMax:68, why:"Infrastructure-as-code, DataOps, Vault (Key Vault skills)"},
+  {n:"Twilio India",    cat:"Big Tech",     loc:"remote",sal:[40,65], salMax:65, why:"Communications data platform, ML, data engineering"},
+];
+
+let activeCat = "All";
+let activeLoc = "all";
+let sortMode = "default";
+
+function locLabel(loc){
+  if(loc==="pune")   return '<span class="loc-tag loc-pune">📍 Pune</span>';
+  if(loc==="remote") return '<span class="loc-tag loc-remote">🌐 Remote</span>';
+  return '<span class="loc-tag loc-both">✦ Both</span>';
+}
+
+function catTag(cat){
+  const c = CATS[cat] || {color:"#888", bg:"rgba(136,136,136,.12)"};
+  return `<span class="cat-tag" style="background:${c.bg};color:${c.color}">${cat}</span>`;
+}
+
+function liSearch(li, url){
+  return `<a href="${url}" target="_blank" rel="noopener">LinkedIn ↗</a>`;
+}
+
+function setLoc(l){
+  activeLoc = l;
+  document.querySelectorAll(".loc-btn").forEach(b=>b.classList.remove("active"));
+  const map={all:"la",pune:"lp",remote:"lr"};
+  document.getElementById(map[l]).classList.add("active");
+  render();
+}
+
+function setSort(s){
+  sortMode = s;
+  document.querySelectorAll(".sort-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("s-"+s).classList.add("active");
+  render();
+}
+
+function buildLegend(){
+  const leg = document.getElementById("legend");
+  leg.innerHTML = Object.entries(CATS).map(([k,v])=>
+    `<div class="leg-item"><div class="leg-dot" style="background:${v.color}"></div>${k}</div>`
+  ).join("");
+}
+
+function buildCatBar(){
+  const bar = document.getElementById("catBar");
+  const all = ["All",...Object.keys(CATS)];
+  bar.innerHTML = all.map(c=>{
+    const col = CATS[c]?.color||"#888";
+    const isA = activeCat===c;
+    return `<button class="cat-btn${isA?" active":""}"
+      style="${isA?`background:${col};border-color:${col};`:""}"
+      onclick="activeCat='${c}';render()">
+      <div class="cat-dot" style="background:${CATS[c]?.color||"#888"}"></div>${c}
+    </button>`;
+  }).join("");
+}
+
+function render(){
+  buildCatBar();
+  const q = document.getElementById("q").value.toLowerCase().trim();
+
+  let rows = DATA.filter(d=>{
+    const cm = activeCat==="All" || d.cat===activeCat;
+    const lm = activeLoc==="all" ||
+      (activeLoc==="pune"   && (d.loc==="pune"  ||d.loc==="both")) ||
+      (activeLoc==="remote" && (d.loc==="remote"||d.loc==="both"));
+    const qm = !q || d.n.toLowerCase().includes(q)||d.cat.toLowerCase().includes(q)||d.why.toLowerCase().includes(q);
+    return cm&&lm&&qm;
+  });
+
+  if(sortMode==="sal")  rows = [...rows].sort((a,b)=>b.salMax-a.salMax);
+  if(sortMode==="name") rows = [...rows].sort((a,b)=>a.n.localeCompare(b.n));
+
+  document.getElementById("rcount").textContent =
+    `Showing ${rows.length} of ${DATA.length} companies`;
+
+  const tbody = document.getElementById("tbody");
+  tbody.innerHTML = rows.map((d,i)=>{
+    const liUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(d.n+" Data Engineer MLOps")}&location=India`;
+    return `<tr>
+      <td class="td-num">${i+1}</td>
+      <td class="td-name">${d.n}</td>
+      <td class="td-cat">${catTag(d.cat)}</td>
+      <td class="td-loc">${locLabel(d.loc)}</td>
+      <td class="td-sal"><span class="sal-hi">₹${d.sal[0]}–${d.sal[1]} LPA</span></td>
+      <td class="td-why">${d.why}</td>
+      <td class="td-act">${liSearch(d.n, liUrl)}</td>
+    </tr>`;
+  }).join("");
+}
+
+window.addEventListener("scroll",()=>{
+  document.getElementById("top").classList.toggle("show", window.scrollY>300);
+});
+
+buildLegend();
+render();
+</script>
+<a href="../" style="position:fixed;left:14px;bottom:14px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;font:500 13px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;text-decoration:none;color:#fff;background:rgba(22,24,29,.88);box-shadow:0 4px 16px rgba(0,0,0,.28);backdrop-filter:blur(8px)">← Bookmarks</a>
+</body>
+</html>
