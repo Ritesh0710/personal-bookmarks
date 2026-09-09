@@ -84,8 +84,19 @@ keeps Jekyll from touching the files.
 git add -A && git commit -m "..." && git push
 ```
 
+**One rule when editing `app.css` or `app.js`:** bump the `?v=` number on both
+links in `index.html`. Pages caches every file for 10 minutes, so without the
+bump a browser can pair a fresh `index.html` with a stale stylesheet.
+
 To work on it locally, open `index.html` through any static file server; there is
 nothing to install. Local work is optional — the deployed site is the product.
+
+### Network calls the site makes
+
+Only two, both from your browser: `api.github.com` for your data, and
+`www.google.com/s2/favicons` for site icons (which tells Google the domains in
+your list, but never the full URLs). Icons that fail to load fall back to a
+coloured letter badge — nothing breaks offline.
 
 ## Environment variables
 
