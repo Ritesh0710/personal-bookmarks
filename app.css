@@ -52,6 +52,10 @@
 
 * { box-sizing: border-box; }
 
+/* Author `display` rules outrank the UA stylesheet's [hidden], so state this
+   once and let every `hidden` toggle in the markup actually work. */
+[hidden] { display: none !important; }
+
 html { background: var(--bg); }
 
 body {
@@ -653,6 +657,7 @@ dialog menu {
   .topbar { gap: 8px; padding: 0 12px; height: 56px; }
   .brand span { display: none; }
   .hint { display: none; }
+  .sync { display: none; }
   #q { padding-right: 34px; }
   #add span { display: none; }
   #add { width: 34px; padding: 0; }
